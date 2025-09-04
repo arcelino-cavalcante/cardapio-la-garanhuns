@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- PWA: INFORMAÇÕES DO APLICATIVO -->
+    <title>Cardápio - La Mundo dos Sabores</title>
+    <meta name="theme-color" content="#FBBF24" />
+    <link rel="apple-touch-icon" href="https://placehold.co/192x192/000000/FBBF24?text=Sabores">
+    <link rel="manifest" href="manifest.json">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Fonte Poppins para todo o site -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        /* ESTILOS E CORES GLOBAIS */
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 84px;
+        }
+
+        @media (min-width: 768px) {
+            html {
+                scroll-padding-top: 140px;
+            }
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #000000;
+        }
+
+        /* Fonte do título agora é Poppins Bold */
+        .brand-title {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #FBBF24;
+            /* Amarelo */
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #F59E0B;
+            /* Amarelo mais escuro */
+        }
+
+        .category-title {
+            background: linear-gradient(to right, #FBBF24, #FCD34D);
+            /* Gradiente Amarelo */
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .card-bg {
+            background-color: #111111;
+        }
+
+        .header-bg {
+            background-color: #111111;
+        }
+
+        #category-nav-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        #category-nav-container {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .category-link.active {
+            color: #FBBF24;
+            /* Amarelo */
+            border-bottom: 2px solid #FBBF24;
+            /* Amarelo */
+        }
+
+        .bottom-nav-btn.active {
+            color: #FBBF24;
+            /* Amarelo */
+        }
+
+        /* --- TRANSIÇÕES --- */
+
+        .card-bg,
+        .smooth-transition {
+            transition: all 0.3s ease-in-out;
+        }
+
+        .card-bg:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(251, 191, 36, 0.1);
+            /* Sombra Amarela */
+        }
+
+        .page-container {
+            transition: opacity 0.4s ease-in-out;
+        }
+
+        /* Animação para a notificação (toast) */
+        @keyframes slideInUp {
+            from {
+                transform: translateY(100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeOutDown {
+            from {
+                transform: translateY(0);
+                opacity: 1;
+            }
+
+            to {
+                transform: translateY(100%);
+                opacity: 0;
+            }
+        }
+
+        .toast-notification {
+            position: fixed;
+            bottom: 5.5rem;
+            right: 1.25rem;
+            background-color: #22c55e;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+            animation: slideInUp 0.5s ease-in-out forwards;
+        }
+
+        .toast-notification.closing {
+            animation: fadeOutDown 0.5s ease-in-out forwards;
+        }
+
+        /* Estilo responsivo para o banner */
+        #banner {
+            height: 200px;
+            /* Altura para telas pequenas (mobile) */
+        }
+
+        @media (min-width: 768px) {
+            #banner {
+                height: 300px;
+                /* Altura para telas maiores (desktop) */
+            }
+        }
+    </style>
+</head>
+
+<body class="text-white pb-28 md:pb-0">
+
+    <!-- Botão de Instalação PWA -->
+    <button id="install-app-btn"
+        class="hidden fixed top-20 right-4 bg-yellow-500 text-black py-2 px-4 rounded-full shadow-lg z-50 animate-pulse">
+        <i class="fas fa-download mr-2"></i>
+        Instalar App
+    </button>
+
+    <!-- Tela do Cardápio -->
+    <div id="menu-page" class="page-container">
+        <header class="header-bg shadow-lg sticky top-0 z-20">
+            <!-- Cabeçalho Principal -->
+            <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+                <div class="flex items-center space-x-3">
+                    <i class="fas fa-pizza-slice text-yellow-500 text-3xl"></i>
+                    <h1 class="text-3xl md:text-4xl brand-title text-yellow-400">La Mundo dos Sabores</h1>
+                </div>
+                <button id="header-view-order-btn"
+                    class="hidden md:flex bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-2 px-4 rounded-full items-center space-x-2 transition-transform transform hover:scale-105 smooth-transition">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Ver Pedido</span>
+                    <span id="header-cart-count"
+                        class="bg-red-600 text-xs font-semibold rounded-full h-5 w-5 flex items-center justify-center">0</span>
+                </button>
+            </div>
+            <!-- Navegação de Categorias (Desktop) -->
+            <nav id="category-nav" class="hidden md:block bg-black shadow-md">
+                <div id="category-nav-container" class="container mx-auto px-6 py-3 overflow-x-auto whitespace-nowrap">
+                    <a href="#pizzas-grandes"
+                        class="category-link text-gray-300 hover:text-yellow-400 px-4 py-2 transition-colors duration-300">Pizzas
+                        Grandes</a>
+                    <a href="#pizzas-medias"
+                        class="category-link text-gray-300 hover:text-yellow-400 px-4 py-2 transition-colors duration-300">Pizzas
+                        Médias</a>
+                    <a href="#pizzas-pequenas"
+                        class="category-link text-gray-300 hover:text-yellow-400 px-4 py-2 transition-colors duration-300">Pizzas
+                        Pequenas</a>
+                    <a href="#hamburgueres"
+                        class="category-link text-gray-300 hover:text-yellow-400 px-4 py-2 transition-colors duration-300">Hambúrgueres</a>
+                    <a href="#promocao"
+                        class="category-link text-gray-300 hover:text-yellow-400 px-4 py-2 transition-colors duration-300">Promoção</a>
+                    <a href="#combos"
+                        class="category-link text-gray-300 hover:text-yellow-400 px-4 py-2 transition-colors duration-300">Combos</a>
+                    <a href="#refrigerantes"
+                        class="category-link text-gray-300 hover:text-yellow-400 px-4 py-2 transition-colors duration-300">Refrigerantes</a>
+                </div>
+            </nav>
+        </header>
+
+        <!-- Banner de Promoções -->
+        <section id="banner" class="container mx-auto px-4 md:px-6 mt-6 relative overflow-hidden rounded-lg shadow-lg">
+            <div id="banner-slider" class="flex transition-transform duration-700 ease-in-out h-full">
+                <!-- Slide 1 -->
+                <a href="#promocao" class="w-full flex-shrink-0 h-full">
+                    <div class="relative w-full h-full">
+                        <img src="imagens/banner/image.png" alt="Promoção 1" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-black bg-opacity-40 flex items-end p-6">
+                            <h3 class="text-white text-2xl font-bold">Pizza do Dia + Refri em Oferta!</h3>
+                        </div>
+                    </div>
+                </a>
+                <!-- Slide 2 -->
+                <a href="#promocao" class="w-full flex-shrink-0 h-full">
+                    <div class="relative w-full h-full">
+                        <img src="https://placehold.co/1200x400/111111/FBBF24?text=Compre+1+Leve+2" alt="Promoção 2"
+                            class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-black bg-opacity-40 flex items-end p-6">
+                            <h3 class="text-white text-2xl font-bold">Compre 1 Hambúrguer e Leve 2!</h3>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <!-- Navegação do Banner -->
+            <div id="banner-dots" class="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2 z-10">
+                <!-- Dots serão gerados via JS -->
+            </div>
+        </section>
+
+        <main class="container mx-auto p-4 md:p-6">
+            <div id="menu-items">
+                <!-- Seção de Pizzas Grandes -->
+                <div id="pizzas-grandes" class="pt-4 pb-12 mb-12 border-b border-yellow-900/50">
+                    <h2 class="text-3xl font-bold mb-6 border-l-4 border-yellow-500 pl-4 category-title">Pizzas Grandes
+                    </h2>
+                    <div class="grid grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div class="card-bg rounded-lg shadow-lg overflow-hidden flex flex-col group">
+                            <div class="overflow-hidden aspect-square">
+                                <img src="imagens/pizzas/pizza1.png" alt="Imagem de Pizza"
+                                    class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110">
+                            </div>
+                            <div class="p-3 md:p-4 flex flex-col flex-grow">
+                                <h3 class="font-bold text-base md:text-xl mb-1 text-yellow-400">Calabresa Grande</h3>
+                                <p class="text-gray-400 text-xs md:text-sm mb-2 flex-grow">Mussarela, calabresa fatiada,
+                                    cebola e azeitonas.</p>
+                                <div class="flex justify-between items-center mt-2">
+                                    <span class="font-bold text-md md:text-lg">R$ 55,00</span>
+                                    <button onclick="addToOrder('Pizza Calabresa Grande', 55.00)"
+                                        class="bg-yellow-500 text-black px-3 py-1 md:px-4 md:py-2 rounded-lg hover:bg-yellow-600 smooth-transition text-sm md:text-base"><i
+                                            class="fas fa-plus md:mr-2"></i><span
+                                            class="hidden md:inline">Adicionar</span></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-bg rounded-lg shadow-lg overflow-hidden flex flex-col group">
+                            <div class="overflow-hidden aspect-square">
+                                <img src="https://placehold.co/600x400/111111/FBBF24?text=Pizza+4+Queijos"
+                                    alt="Imagem de Pizza"
+                                    class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110">
+                            </div>
+                            <div class="p-3 md:p-4 flex flex-col flex-grow">
+                                <h3 class="font-bold text-base md:text-xl mb-1 text-yellow-400">4 Queijos Grande</h3>
+                                <p class="text-gray-400 text-xs md:text-sm mb-2 flex-grow">Mussarela, provolone,
+                                    parmesão e catupiry.</p>
+                                <div class="flex justify-between items-center mt-2">
+                                    <span class="font-bold text-md md:text-lg">R$ 58,00</span>
+                                    <button onclick="addToOrder('Pizza 4 Queijos Grande', 58.00)"
+                                        class="bg-yellow-500 text-black px-3 py-1 md:px-4 md:py-2 rounded-lg hover:bg-yellow-600 smooth-transition text-sm md:text-base"><i
+                                            class="fas fa-plus md:mr-2"></i><span
+                                            class="hidden md:inline">Adicionar</span></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Seção de Pizzas Médias -->
+                <div id="pizzas-medias" class="pt-4 pb-12 mb-12 border-b border-yellow-900/50">
+                    <h2 class="text-3xl font-bold mb-6 border-l-4 border-yellow-500 pl-4 category-title">Pizzas Médias
+                    </h2>
+                    <div class="grid grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div class="card-bg rounded-lg shadow-lg overflow-hidden flex flex-col group">
+                            <div class="overflow-hidden aspect-square">
+                                <img src="https://placehold.co/600x400/111111/FBBF24?text=Pizza+Frango"
+                                    alt="Imagem de Pizza"
+                                    class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110">
+                            </div>
+                            <div class="p-3 md:p-4 flex flex-col flex-grow">
+                                <h3 class="font-bold text-base md:text-xl mb-1 text-yellow-400">Frango com Catupiry
+                                    Média</h3>
+                                <p class="text-gray-400 text-xs md:text-sm mb-2 flex-grow">Mussarela, frango desfiado,
+                                    catupiry e milho.</p>
+                                <div class="flex justify-between items-center mt-2">
+                                    <span class="font-bold text-md md:text-lg">R$ 45,00</span>
+                                    <button onclick="addToOrder('Pizza Frango Média', 45.00)"
+                                        class="bg-yellow-500 text-black px-3 py-1 md:px-4 md:py-2 rounded-lg hover:bg-yellow-600 smooth-transition text-sm md:text-base"><i
+                                            class="fas fa-plus md:mr-2"></i><span
+                                            class="hidden md:inline">Adicionar</span></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Seção de Pizzas Pequenas -->
+                <div id="pizzas-pequenas" class="pt-4 pb-12 mb-12 border-b border-yellow-900/50">
+                    <h2 class="text-3xl font-bold mb-6 border-l-4 border-yellow-500 pl-4 category-title">Pizzas Pequenas
+                    </h2>
+                    <div class="grid grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div class="card-bg rounded-lg shadow-lg overflow-hidden flex flex-col group">
+                            <div class="overflow-hidden aspect-square">
+                                <img src="https://placehold.co/600x400/111111/FBBF24?text=Pizza+Mussarela"
+                                    alt="Imagem de Pizza"
+                                    class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110">
+                            </div>
+                            <div class="p-3 md:p-4 flex flex-col flex-grow">
+                                <h3 class="font-bold text-base md:text-xl mb-1 text-yellow-400">Mussarela Pequena</h3>
+                                <p class="text-gray-400 text-xs md:text-sm mb-2 flex-grow">Mussarela, molho de tomate e
+                                    orégano.</p>
+                                <div class="flex justify-between items-center mt-2">
+                                    <span class="font-bold text-md md:text-lg">R$ 35,00</span>
+                                    <button onclick="addToOrder('Pizza Mussarela Pequena', 35.00)"
+                                        class="bg-yellow-500 text-black px-3 py-1 md:px-4 md:py-2 rounded-lg hover:bg-yellow-600 smooth-transition text-sm md:text-base"><i
+                                            class="fas fa-plus md:mr-2"></i><span
+                                            class="hidden md:inline">Adicionar</span></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Seção de Hambúrgueres -->
+                <div id="hamburgueres" class="pt-4 pb-12 mb-12 border-b border-yellow-900/50">
+                    <h2 class="text-3xl font-bold mb-6 border-l-4 border-yellow-500 pl-4 category-title">Hambúrgueres
+                    </h2>
+                    <div class="grid grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div class="card-bg rounded-lg shadow-lg overflow-hidden flex flex-col group">
+                            <div class="overflow-hidden aspect-square">
+                                <img src="https://placehold.co/600x400/111111/FBBF24?text=Hamb%C3%BArguer"
+                                    alt="Imagem de Hambúrguer"
+                                    class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110">
+                            </div>
+                            <div class="p-3 md:p-4 flex flex-col flex-grow">
+                                <h3 class="font-bold text-base md:text-xl mb-1 text-yellow-400">Hambúrguer Especial da
+                                    Casa</h3>
+                                <p class="text-gray-400 text-xs md:text-sm mb-2 flex-grow">Hambúrguer, mussarela, molho
+                                    BBQ, salada, molho de queijos.</p>
+                                <div class="flex justify-between items-center mt-2">
+                                    <span class="font-bold text-md md:text-lg">R$ 10,00</span>
+                                    <button onclick="addToOrder('Hambúrguer Especial da Casa', 10.00)"
+                                        class="bg-yellow-500 text-black px-3 py-1 md:px-4 md:py-2 rounded-lg hover:bg-yellow-600 smooth-transition text-sm md:text-base"><i
+                                            class="fas fa-plus md:mr-2"></i><span
+                                            class="hidden md:inline">Adicionar</span></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-bg rounded-lg shadow-lg overflow-hidden flex flex-col group">
+                            <div class="overflow-hidden aspect-square">
+                                <img src="https://placehold.co/600x400/111111/FBBF24?text=Hamb%C3%BArguer"
+                                    alt="Imagem de Hambúrguer"
+                                    class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110">
+                            </div>
+                            <div class="p-3 md:p-4 flex flex-col flex-grow">
+                                <h3 class="font-bold text-base md:text-xl mb-1 text-yellow-400">Hambúrguer Artesanal da
+                                    Casa</h3>
+                                <p class="text-gray-400 text-xs md:text-sm mb-2 flex-grow">Carne artesanal, queijo
+                                    cheddar, bacon, molho BBQ, salada, molho de queijos e ervas.</p>
+                                <div class="flex justify-between items-center mt-2">
+                                    <span class="font-bold text-md md:text-lg">R$ 20,00</span>
+                                    <button onclick="addToOrder('Hambúrguer Artesanal da Casa', 20.00)"
+                                        class="bg-yellow-500 text-black px-3 py-1 md:px-4 md:py-2 rounded-lg hover:bg-yellow-600 smooth-transition text-sm md:text-base"><i
+                                            class="fas fa-plus md:mr-2"></i><span
+                                            class="hidden md:inline">Adicionar</span></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Seção de Promoção -->
+                <div id="promocao" class="pt-4 pb-12 mb-12 border-b border-yellow-900/50">
+                    <h2 class="text-3xl font-bold mb-6 border-l-4 border-yellow-500 pl-4 category-title">Promoção</h2>
+                    <div class="grid grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div class="card-bg rounded-lg shadow-lg overflow-hidden flex flex-col group">
+                            <div class="overflow-hidden aspect-square">
+                                <img src="https://placehold.co/600x400/111111/FBBF24?text=Promo+Pizza"
+                                    alt="Imagem de Promoção"
+                                    class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110">
+                            </div>
+                            <div class="p-3 md:p-4 flex flex-col flex-grow">
+                                <h3 class="font-bold text-base md:text-xl mb-1 text-yellow-400">Pizza do Dia + Refri
+                                </h3>
+                                <p class="text-gray-400 text-xs md:text-sm mb-2 flex-grow">1 Pizza Média de Calabresa +
+                                    1 Refrigerante 1L.</p>
+                                <div class="flex justify-between items-center mt-2">
+                                    <span class="font-bold text-md md:text-lg">R$ 49,90</span>
+                                    <button onclick="addToOrder('Promo Pizza do Dia', 49.90)"
+                                        class="bg-yellow-500 text-black px-3 py-1 md:px-4 md:py-2 rounded-lg hover:bg-yellow-600 smooth-transition text-sm md:text-base"><i
+                                            class="fas fa-plus md:mr-2"></i><span
+                                            class="hidden md:inline">Adicionar</span></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-bg rounded-lg shadow-lg overflow-hidden flex flex-col group">
+                            <div class="overflow-hidden aspect-square">
+                                <img src="https://placehold.co/600x400/111111/FBBF24?text=Promo+Burger"
+                                    alt="Imagem de Promoção"
+                                    class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110">
+                            </div>
+                            <div class="p-3 md:p-4 flex flex-col flex-grow">
+                                <h3 class="font-bold text-base md:text-xl mb-1 text-yellow-400">Compre 1 Leve 2</h3>
+                                <p class="text-gray-400 text-xs md:text-sm mb-2 flex-grow">Compre um Hambúrguer
+                                    Artesanal e leve um Especial da Casa.</p>
+                                <div class="flex justify-between items-center mt-2">
+                                    <span class="font-bold text-md md:text-lg">R$ 20,00</span>
+                                    <button onclick="addToOrder('Promo Compre 1 Leve 2', 20.00)"
+                                        class="bg-yellow-500 text-black px-3 py-1 md:px-4 md:py-2 rounded-lg hover:bg-yellow-600 smooth-transition text-sm md:text-base"><i
+                                            class="fas fa-plus md:mr-2"></i><span
+                                            class="hidden md:inline">Adicionar</span></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Combos -->
+                <div id="combos" class="pt-4 pb-12 mb-12 border-b border-yellow-900/50">
+                    <h2 class="text-3xl font-bold mb-6 border-l-4 border-yellow-500 pl-4 category-title">Combos</h2>
+                    <div class="grid grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div class="card-bg rounded-lg shadow-lg overflow-hidden flex flex-col group">
+                            <div class="overflow-hidden aspect-square">
+                                <img src="https://placehold.co/600x400/111111/FBBF24?text=Combo" alt="Imagem de Combo"
+                                    class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110">
+                            </div>
+                            <div class="p-3 md:p-4 flex flex-col flex-grow">
+                                <h3 class="font-bold text-base md:text-xl mb-1 text-yellow-400">#01 Especial da Casa
+                                </h3>
+                                <p class="text-gray-400 text-xs md:text-sm mb-2 flex-grow">Hambúrguer + Batata chips +
+                                    Refrigerante copo.</p>
+                                <div class="flex justify-between items-center mt-2">
+                                    <span class="font-bold text-md md:text-lg">R$ 12,00</span>
+                                    <button onclick="addToOrder('#01 Especial da Casa', 12.00)"
+                                        class="bg-yellow-500 text-black px-3 py-1 md:px-4 md:py-2 rounded-lg hover:bg-yellow-600 smooth-transition text-sm md:text-base"><i
+                                            class="fas fa-plus md:mr-2"></i><span
+                                            class="hidden md:inline">Adicionar</span></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-bg rounded-lg shadow-lg overflow-hidden flex flex-col group">
+                            <div class="overflow-hidden aspect-square">
+                                <img src="https://placehold.co/600x400/111111/FBBF24?text=Combo" alt="Imagem de Combo"
+                                    class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110">
+                            </div>
+                            <div class="p-3 md:p-4 flex flex-col flex-grow">
+                                <h3 class="font-bold text-base md:text-xl mb-1 text-yellow-400">#02 Duplo Cheese</h3>
+                                <p class="text-gray-400 text-xs md:text-sm mb-2 flex-grow">Duplo Cheese + Ks + Batata
+                                    Chips.</p>
+                                <div class="flex justify-between items-center mt-2">
+                                    <span class="font-bold text-md md:text-lg">R$ 28,00</span>
+                                    <button onclick="addToOrder('#02 Duplo Cheese', 28.00)"
+                                        class="bg-yellow-500 text-black px-3 py-1 md:px-4 md:py-2 rounded-lg hover:bg-yellow-600 smooth-transition text-sm md:text-base"><i
+                                            class="fas fa-plus md:mr-2"></i><span
+                                            class="hidden md:inline">Adicionar</span></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Refrigerantes -->
+                <div id="refrigerantes" class="pt-4">
+                    <h2 class="text-3xl font-bold mb-6 border-l-4 border-yellow-500 pl-4 category-title">Refrigerantes
+                    </h2>
+                    <div class="grid grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div class="card-bg rounded-lg shadow-lg overflow-hidden flex flex-col group">
+                            <div class="overflow-hidden aspect-square">
+                                <img src="https://placehold.co/600x400/111111/FBBF24?text=Coca-Cola"
+                                    alt="Imagem de Refrigerante"
+                                    class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110">
+                            </div>
+                            <div class="p-3 md:p-4 flex flex-col flex-grow">
+                                <h3 class="font-bold text-base md:text-xl mb-1 text-yellow-400">Coca-Cola Lata</h3>
+                                <p class="text-gray-400 text-xs md:text-sm mb-2 flex-grow">Lata de 350ml.</p>
+                                <div class="flex justify-between items-center mt-2">
+                                    <span class="font-bold text-md md:text-lg">R$ 7,00</span>
+                                    <button onclick="addToOrder('Coca-Cola Lata', 7.00)"
+                                        class="bg-yellow-500 text-black px-3 py-1 md:px-4 md:py-2 rounded-lg hover:bg-yellow-600 smooth-transition text-sm md:text-base"><i
+                                            class="fas fa-plus md:mr-2"></i><span
+                                            class="hidden md:inline">Adicionar</span></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-bg rounded-lg shadow-lg overflow-hidden flex flex-col group">
+                            <div class="overflow-hidden aspect-square">
+                                <img src="https://placehold.co/600x400/111111/FBBF24?text=Guaran%C3%A1"
+                                    alt="Imagem de Refrigerante"
+                                    class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110">
+                            </div>
+                            <div class="p-3 md:p-4 flex flex-col flex-grow">
+                                <h3 class="font-bold text-base md:text-xl mb-1 text-yellow-400">Guaraná Antártica 1L
+                                </h3>
+                                <p class="text-gray-400 text-xs md:text-sm mb-2 flex-grow">Garrafa de 1 Litro.</p>
+                                <div class="flex justify-between items-center mt-2">
+                                    <span class="font-bold text-md md:text-lg">R$ 9,00</span>
+                                    <button onclick="addToOrder('Guaraná 1L', 9.00)"
+                                        class="bg-yellow-500 text-black px-3 py-1 md:px-4 md:py-2 rounded-lg hover:bg-yellow-600 smooth-transition text-sm md:text-base"><i
+                                            class="fas fa-plus md:mr-2"></i><span
+                                            class="hidden md:inline">Adicionar</span></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Tela do Pedido -->
+    <div id="order-page" class="page-container hidden">
+        <div class="container mx-auto p-6">
+            <div class="card-bg rounded-lg shadow-2xl p-8 max-w-2xl mx-auto relative">
+                <!-- Botão de Fechar (X) -->
+                <button id="close-order-page-btn"
+                    class="absolute top-4 right-4 text-gray-400 hover:text-white text-3xl smooth-transition z-10">
+                    &times;
+                </button>
+                <div class="flex items-center mb-6">
+                    <i class="fas fa-receipt text-yellow-500 text-3xl mr-4"></i>
+                    <h2 class="text-3xl font-bold text-white">Meu Pedido</h2>
+                </div>
+                <div id="order-items-list" class="space-y-4 mb-6 max-h-60 overflow-y-auto pr-2"></div>
+                <div class="border-t border-gray-700 pt-4 space-y-2 text-lg">
+                    <div class="flex justify-between"><span class="text-gray-400">Subtotal:</span><span id="subtotal"
+                            class="font-semibold">R$ 0,00</span></div>
+                    <div class="flex justify-between"><span class="text-gray-400">Taxa de Entrega:</span><span
+                            id="delivery-fee" class="font-semibold">R$ 0,00</span></div>
+                    <div class="flex justify-between text-2xl font-bold text-yellow-400"><span>Total:</span><span
+                            id="total-price">R$ 0,00</span></div>
+                </div>
+                <div class="mt-8 border-t border-gray-700 pt-6">
+                    <h3 class="text-2xl font-semibold mb-4 text-white">Detalhes da Entrega</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label for="delivery-option" class="block mb-2 text-sm font-medium text-gray-300">Opção de
+                                Entrega</label>
+                            <select id="delivery-option"
+                                class="bg-gray-800 border border-gray-600 text-white text-sm rounded-lg focus:ring-yellow-500 focus:border-yellow-500 block w-full p-2.5">
+                                <option value="local">Retirar no Local</option>
+                                <option value="vila_neves">Vila Neves</option>
+                                <option value="sitio">Sítio</option>
+                            </select>
+                        </div>
+                        <div id="sitio-selection" class="hidden">
+                            <label for="sitio-list" class="block mb-2 text-sm font-medium text-gray-300">Selecione o
+                                Sítio</label>
+                            <select id="sitio-list"
+                                class="bg-gray-800 border border-gray-600 text-white text-sm rounded-lg focus:ring-yellow-500 focus:border-yellow-500 block w-full p-2.5">
+                                <option value="0">Selecione...</option>
+                                <option value="5">Sítio A - R$ 5,00</option>
+                                <option value="7">Sítio B - R$ 7,00</option>
+                                <option value="10">Sítio C - R$ 10,00</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="address" class="block mb-2 text-sm font-medium text-gray-300">Local ou Ponto de
+                                Referência</label>
+                            <input type="text" id="address"
+                                class="bg-gray-800 border border-gray-600 text-white text-sm rounded-lg focus:ring-yellow-500 focus:border-yellow-500 block w-full p-2.5"
+                                placeholder="Ex: Rua Principal, 123">
+                        </div>
+                        <div>
+                            <label for="client-name" class="block mb-2 text-sm font-medium text-gray-300">Seu
+                                Nome</label>
+                            <input type="text" id="client-name"
+                                class="bg-gray-800 border border-gray-600 text-white text-sm rounded-lg focus:ring-yellow-500 focus:border-yellow-500 block w-full p-2.5"
+                                placeholder="Como podemos te chamar?">
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-8 pt-6 border-t border-gray-700 flex flex-col sm:flex-row gap-4 justify-end">
+                    <button id="add-more-btn"
+                        class="bg-gray-600 hover:bg-gray-500 text-white font-bold py-3 px-6 rounded-lg smooth-transition w-full sm:w-auto"><i
+                            class="fas fa-plus mr-2"></i>Adicionar Mais</button>
+                    <button id="cancel-order-btn"
+                        class="bg-red-700 hover:bg-red-800 text-white font-bold py-3 px-6 rounded-lg smooth-transition w-full sm:w-auto"><i
+                            class="fas fa-times mr-2"></i>Cancelar Pedido</button>
+                    <button id="submit-order-btn"
+                        class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg smooth-transition w-full sm:w-auto"><i
+                            class="fab fa-whatsapp mr-2"></i>Enviar Pedido</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Confirmação -->
+    <div id="confirmation-modal"
+        class="hidden fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center">
+        <div class="card-bg rounded-lg shadow-xl p-8 max-w-sm mx-auto text-center">
+            <div class="text-green-400 mb-4"><i class="fas fa-check-circle fa-4x"></i></div>
+            <h3 class="text-2xl font-bold mb-2">Pedido Enviado!</h3>
+            <p class="text-gray-300 mb-6">Seu pedido foi enviado com sucesso. Em breve entraremos em contato!</p>
+            <button id="close-modal-btn"
+                class="bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-2 px-6 rounded-lg smooth-transition">Fechar</button>
+        </div>
+    </div>
+
+    <!-- Menu Inferior (Mobile) -->
+    <div id="bottom-nav"
+        class="md:hidden fixed bottom-0 left-0 right-0 bg-gray-900 border-t border-yellow-800/50 flex justify-around items-center py-3 px-2 z-30">
+        <button id="bottom-nav-menu"
+            class="bottom-nav-btn flex flex-col items-center text-gray-300 hover:text-yellow-500 transition-colors active">
+            <i class="fas fa-utensils text-xl"></i><span class="text-xs mt-1">Cardápio</span>
+        </button>
+        <button id="bottom-nav-categories"
+            class="bottom-nav-btn flex flex-col items-center text-gray-300 hover:text-yellow-500 transition-colors">
+            <i class="fas fa-list-ul text-xl"></i><span class="text-xs mt-1">Categorias</span>
+        </button>
+        <button id="bottom-nav-order"
+            class="bottom-nav-btn flex flex-col items-center text-gray-300 hover:text-yellow-500 transition-colors relative">
+            <i class="fas fa-shopping-cart text-xl"></i><span class="text-xs mt-1">Ver Pedido</span>
+            <span id="bottom-cart-count"
+                class="absolute -top-1 -right-1 bg-red-600 text-xs font-semibold rounded-full h-5 w-5 flex items-center justify-center">0</span>
+        </button>
+        <button id="bottom-nav-info"
+            class="bottom-nav-btn flex flex-col items-center text-gray-300 hover:text-yellow-500 transition-colors">
+            <i class="fas fa-info-circle text-xl"></i><span class="text-xs mt-1">Info</span>
+        </button>
+    </div>
+
+    <!-- Tela de Informações -->
+    <div id="info-page" class="page-container hidden">
+        <div class="container mx-auto p-6">
+            <div class="card-bg rounded-lg shadow-2xl p-8 max-w-2xl mx-auto">
+                <div class="flex items-center mb-6">
+                    <i class="fas fa-info-circle text-yellow-500 text-3xl mr-4"></i>
+                    <h2 class="text-3xl font-bold text-white">Sobre a La Mundo dos Sabores</h2>
+                </div>
+                <div class="space-y-6 text-gray-300">
+                    <div>
+                        <h3 class="font-semibold text-lg text-yellow-400 mb-2">Endereço</h3>
+                        <p>Rua Exemplo, 123 - Centro, Sua Cidade - PE</p>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-lg text-yellow-400 mb-2">Horário de Funcionamento</h3>
+                        <p>Terça a Domingo: 18:00h - 23:00h</p>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-lg text-yellow-400 mb-2">Contato</h3>
+                        <p><i class="fab fa-whatsapp mr-2"></i>(87) 99990-4732</p>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-lg text-yellow-400 mb-2">Siga-nos</h3>
+                        <a href="#" class="hover:text-yellow-500"><i
+                                class="fab fa-instagram mr-2"></i>@lamundodossabores</a>
+                    </div>
+                </div>
+                <div class="mt-8 pt-6 border-t border-gray-700 flex justify-end">
+                    <button id="back-to-menu-btn"
+                        class="bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-3 px-6 rounded-lg smooth-transition w-full sm:w-auto"><i
+                            class="fas fa-arrow-left mr-2"></i>Voltar ao Cardápio</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Categorias (Mobile) -->
+    <div id="category-modal" class="hidden fixed inset-0 bg-black/70 z-40 opacity-0 transition-opacity duration-300">
+        <div id="category-modal-content"
+            class="absolute bottom-0 left-0 right-0 bg-gray-900 rounded-t-2xl p-6 transform translate-y-full transition-transform duration-300">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-yellow-400">Categorias</h3>
+                <button id="close-category-modal" class="text-2xl">&times;</button>
+            </div>
+            <div class="flex flex-col space-y-4">
+                <a href="#pizzas-grandes"
+                    class="modal-category-link text-lg text-gray-300 hover:text-yellow-500 py-2">Pizzas Grandes</a>
+                <a href="#pizzas-medias"
+                    class="modal-category-link text-lg text-gray-300 hover:text-yellow-500 py-2">Pizzas Médias</a>
+                <a href="#pizzas-pequenas"
+                    class="modal-category-link text-lg text-gray-300 hover:text-yellow-500 py-2">Pizzas Pequenas</a>
+                <a href="#hamburgueres"
+                    class="modal-category-link text-lg text-gray-300 hover:text-yellow-500 py-2">Hambúrgueres</a>
+                <a href="#promocao"
+                    class="modal-category-link text-lg text-gray-300 hover:text-yellow-500 py-2">Promoção</a>
+                <a href="#combos"
+                    class="modal-category-link text-lg text-gray-300 hover:text-yellow-500 py-2">Combos</a>
+                <a href="#refrigerantes"
+                    class="modal-category-link text-lg text-gray-300 hover:text-yellow-500 py-2">Refrigerantes</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // --- Lógica PWA ---
+            const manifest = {
+                "name": "La Mundo dos Sabores",
+                "short_name": "Sabores",
+                "start_url": window.location.href,
+                "display": "standalone",
+                "background_color": "#000000",
+                "theme_color": "#FBBF24",
+                "description": "Cardápio Digital da La Mundo dos Sabores",
+                "icons": [{
+                    "src": "https://placehold.co/192x192/000000/FBBF24?text=Sabores",
+                    "sizes": "192x192",
+                    "type": "image/png"
+                }, {
+                    "src": "https://placehold.co/512x512/000000/FBBF24?text=Sabores",
+                    "sizes": "512x512",
+                    "type": "image/png"
+                }]
+            };
+
+            const manifestString = JSON.stringify(manifest);
+            const manifestBlob = new Blob([manifestString], { type: 'application/json' });
+            const manifestUrl = URL.createObjectURL(manifestBlob);
+            const link = document.querySelector('link[rel="manifest"]') || document.createElement('link');
+            link.rel = 'manifest';
+            link.href = manifestUrl;
+            document.head.appendChild(link);
+
+            let deferredPrompt;
+            const installBtn = document.getElementById('install-app-btn');
+
+            if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
+                installBtn.classList.add('hidden');
+            }
+
+            window.addEventListener('beforeinstallprompt', (e) => {
+                e.preventDefault();
+                deferredPrompt = e;
+                if (!window.matchMedia('(display-mode: standalone)').matches && !window.navigator.standalone) {
+                    installBtn.classList.remove('hidden');
+                }
+            });
+
+            installBtn.addEventListener('click', (e) => {
+                installBtn.classList.add('hidden');
+                if (deferredPrompt) {
+                    deferredPrompt.prompt();
+                    deferredPrompt.userChoice.then((choiceResult) => {
+                        deferredPrompt = null;
+                    });
+                }
+            });
+
+            // --- Lógica do Cardápio ---
+            let orderItems = [];
+            let deliveryFee = 0;
+
+            const menuPage = document.getElementById('menu-page');
+            const orderPage = document.getElementById('order-page');
+            const infoPage = document.getElementById('info-page');
+            let currentPage = menuPage;
+
+            const headerViewOrderBtn = document.getElementById('header-view-order-btn');
+            const addMoreBtn = document.getElementById('add-more-btn');
+            const cancelOrderBtn = document.getElementById('cancel-order-btn');
+            const submitOrderBtn = document.getElementById('submit-order-btn');
+            const headerCartCount = document.getElementById('header-cart-count');
+            const bottomCartCount = document.getElementById('bottom-cart-count');
+            const orderItemsList = document.getElementById('order-items-list');
+            const subtotalEl = document.getElementById('subtotal');
+            const deliveryFeeEl = document.getElementById('delivery-fee');
+            const totalPriceEl = document.getElementById('total-price');
+            const deliveryOption = document.getElementById('delivery-option');
+            const sitioSelection = document.getElementById('sitio-selection');
+            const sitioList = document.getElementById('sitio-list');
+            const confirmationModal = document.getElementById('confirmation-modal');
+            const closeModalBtn = document.getElementById('close-modal-btn');
+            const bottomNavMenuBtn = document.getElementById('bottom-nav-menu');
+            const bottomNavCategoriesBtn = document.getElementById('bottom-nav-categories');
+            const bottomNavOrderBtn = document.getElementById('bottom-nav-order');
+            const bottomNavInfoBtn = document.getElementById('bottom-nav-info');
+            const backToMenuBtn = document.getElementById('back-to-menu-btn');
+            const categoryModal = document.getElementById('category-modal');
+            const categoryModalContent = document.getElementById('category-modal-content');
+            const closeCategoryModalBtn = document.getElementById('close-category-modal');
+            const modalCategoryLinks = document.querySelectorAll('.modal-category-link');
+            const sections = document.querySelectorAll('#menu-items > div');
+            const navLinks = document.querySelectorAll('#category-nav a');
+            const closeOrderPageBtn = document.getElementById('close-order-page-btn');
+
+            window.showPage = function (pageId) {
+                const newPage = document.getElementById(pageId);
+                if (currentPage === newPage) return;
+
+                currentPage.style.opacity = '0';
+
+                setTimeout(() => {
+                    currentPage.classList.add('hidden');
+
+                    newPage.classList.remove('hidden');
+                    void newPage.offsetWidth;
+                    newPage.style.opacity = '1';
+
+                    currentPage = newPage;
+
+                    const pageName = pageId.split('-')[0];
+                    updateBottomNavActiveState(pageName);
+                    window.scrollTo(0, 0);
+                }, 400);
+            }
+
+            function formatCurrency(value) {
+                return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+            }
+
+            window.addToOrder = function (itemName, itemPrice) {
+                const existingItem = orderItems.find(item => item.name === itemName);
+                if (existingItem) {
+                    existingItem.quantity++;
+                } else {
+                    orderItems.push({ name: itemName, price: itemPrice, quantity: 1 });
+                }
+                updateCart();
+                showToast(`${itemName} adicionado!`);
+            }
+
+            window.removeFromOrder = function (itemName) {
+                const itemIndex = orderItems.findIndex(item => item.name === itemName);
+                if (itemIndex > -1) {
+                    if (orderItems[itemIndex].quantity > 1) {
+                        orderItems[itemIndex].quantity--;
+                    } else {
+                        orderItems.splice(itemIndex, 1);
+                    }
+                }
+                updateCart();
+            }
+
+            function updateCart() {
+                updateCartCount();
+                updateOrderView();
+            }
+
+            function updateCartCount() {
+                const totalItems = orderItems.reduce((sum, item) => sum + item.quantity, 0);
+                headerCartCount.textContent = totalItems;
+                bottomCartCount.textContent = totalItems;
+                headerCartCount.style.display = totalItems > 0 ? 'flex' : 'none';
+                bottomCartCount.style.display = totalItems > 0 ? 'flex' : 'none';
+            }
+
+            function updateOrderView() {
+                if (orderItems.length === 0) {
+                    orderItemsList.innerHTML = '<p class="text-gray-400 text-center">Seu carrinho está vazio.</p>';
+                } else {
+                    orderItemsList.innerHTML = orderItems.map(item => `
+                    <div class="flex justify-between items-center bg-gray-800 p-3 rounded-lg">
+                        <div>
+                            <p class="font-semibold">${item.name}</p>
+                            <p class="text-sm text-gray-400">${formatCurrency(item.price)}</p>
+                        </div>
+                        <div class="flex items-center gap-3">
+                             <span class="font-bold">${item.quantity}x</span>
+                             <button onclick="removeFromOrder('${item.name}')" class="text-red-500 hover:text-red-400 text-lg"><i class="fas fa-trash-alt"></i></button>
+                        </div>
+                    </div>`).join('');
+                }
+                calculateTotal();
+            }
+
+            function calculateTotal() {
+                const subtotal = orderItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                const option = deliveryOption.value;
+                if (option === 'vila_neves') {
+                    deliveryFee = 2.00;
+                    sitioSelection.classList.add('hidden');
+                } else if (option === 'sitio') {
+                    sitioSelection.classList.remove('hidden');
+                    deliveryFee = parseFloat(sitioList.value) || 0;
+                } else {
+                    deliveryFee = 0;
+                    sitioSelection.classList.add('hidden');
+                }
+                const total = subtotal + deliveryFee;
+                subtotalEl.textContent = formatCurrency(subtotal);
+                deliveryFeeEl.textContent = formatCurrency(deliveryFee);
+                totalPriceEl.textContent = formatCurrency(total);
+            }
+
+            function generateWhatsAppMessage() {
+                if (orderItems.length === 0) {
+                    alert("Seu carrinho está vazio!");
+                    return;
+                }
+                const clientName = document.getElementById('client-name').value;
+                const address = document.getElementById('address').value;
+                const deliveryType = deliveryOption.options[deliveryOption.selectedIndex].text;
+
+                if (!clientName) {
+                    alert("Por favor, informe seu nome.");
+                    return;
+                }
+                if (deliveryOption.value !== 'local' && !address) {
+                    alert("Por favor, informe o endereço ou ponto de referência.");
+                    return;
+                }
+                if (deliveryOption.value === 'sitio' && sitioList.value === '0') {
+                    alert("Por favor, selecione o sítio para entrega.");
+                    return;
+                }
+
+                let message = `🍕 *Novo Pedido La Mundo dos Sabores* 🍕\n\n`;
+                message += `👤 *Cliente:* ${clientName}\n`;
+                if (deliveryOption.value !== 'local') {
+                    message += `🏠 *Endereço/Referência:* ${address}\n`;
+                }
+                if (deliveryOption.value === 'sitio') {
+                    message += `📍 *Sítio:* ${sitioList.options[sitioList.selectedIndex].text.split('-')[0].trim()}\n`;
+                }
+                message += `🚚 *Forma de Entrega:* ${deliveryType}\n\n------------------------------------\n\n📋 *Itens do Pedido:*\n`;
+                orderItems.forEach(item => {
+                    message += `   • ${item.quantity}x ${item.name} - ${formatCurrency(item.price * item.quantity)}\n`;
+                });
+                message += `\n------------------------------------\n\n💰 *Subtotal:* ${subtotalEl.textContent}\n🛵 *Taxa de Entrega:* ${deliveryFeeEl.textContent}\n------------------------------------\n*Total do Pedido:* *${totalPriceEl.textContent}*\n------------------------------------\n\nAgradecemos a preferência!`;
+                return encodeURIComponent(message);
+            }
+
+            function showToast(message) {
+                const toast = document.createElement('div');
+                toast.className = 'toast-notification';
+                toast.textContent = message;
+                document.body.appendChild(toast);
+                setTimeout(() => {
+                    toast.classList.add('closing');
+                    toast.addEventListener('animationend', () => {
+                        toast.remove();
+                    });
+                }, 2500);
+            }
+
+            function toggleCategoryModal(show) {
+                if (show) {
+                    categoryModal.classList.remove('hidden');
+                    requestAnimationFrame(() => {
+                        categoryModal.classList.remove('opacity-0');
+                        categoryModalContent.classList.remove('translate-y-full');
+                    });
+                } else {
+                    categoryModal.classList.add('opacity-0');
+                    categoryModalContent.classList.add('translate-y-full');
+                    setTimeout(() => {
+                        categoryModal.classList.add('hidden');
+                    }, 300);
+                }
+            }
+
+            function updateBottomNavActiveState(activeState) {
+                bottomNavMenuBtn.classList.toggle('active', activeState === 'menu');
+                bottomNavCategoriesBtn.classList.toggle('active', activeState === 'categories');
+                bottomNavOrderBtn.classList.toggle('active', activeState === 'order');
+                bottomNavInfoBtn.classList.toggle('active', activeState === 'info');
+            }
+
+            headerViewOrderBtn.addEventListener('click', () => showPage('order-page'));
+            addMoreBtn.addEventListener('click', () => showPage('menu-page'));
+            backToMenuBtn.addEventListener('click', () => showPage('menu-page'));
+            closeOrderPageBtn.addEventListener('click', () => showPage('menu-page'));
+
+            cancelOrderBtn.addEventListener('click', () => {
+                if (confirm('Tem certeza que deseja cancelar o pedido e limpar seu carrinho?')) {
+                    orderItems = [];
+                    updateCart();
+                    showPage('menu-page');
+                }
+            });
+
+            submitOrderBtn.addEventListener('click', () => {
+                const message = generateWhatsAppMessage();
+                if (message) {
+                    const phoneNumber = '5587999904732';
+                    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
+                    window.open(whatsappUrl, '_blank');
+                    confirmationModal.classList.remove('hidden');
+                }
+            });
+            deliveryOption.addEventListener('change', calculateTotal);
+            sitioList.addEventListener('change', calculateTotal);
+            closeModalBtn.addEventListener('click', () => {
+                confirmationModal.classList.add('hidden');
+                orderItems = [];
+                updateCart();
+                document.getElementById('client-name').value = '';
+                document.getElementById('address').value = '';
+                deliveryOption.value = 'local';
+                sitioList.value = '0';
+                calculateTotal();
+                showPage('menu-page');
+            });
+            bottomNavMenuBtn.addEventListener('click', () => {
+                showPage('menu-page');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+            bottomNavCategoriesBtn.addEventListener('click', () => {
+                toggleCategoryModal(true);
+                updateBottomNavActiveState('categories');
+            });
+            bottomNavOrderBtn.addEventListener('click', () => showPage('order-page'));
+            bottomNavInfoBtn.addEventListener('click', () => showPage('info-page'));
+            closeCategoryModalBtn.addEventListener('click', () => toggleCategoryModal(false));
+            categoryModal.addEventListener('click', (e) => {
+                if (e.target === categoryModal) toggleCategoryModal(false);
+            });
+            modalCategoryLinks.forEach(link => {
+                link.addEventListener('click', () => toggleCategoryModal(false));
+            });
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.toggle('active', link.getAttribute('href').substring(1) === entry.target.id);
+                        });
+                    }
+                });
+            }, { threshold: 0.5 });
+            sections.forEach(section => observer.observe(section));
+
+            // --- Lógica do Banner ---
+            const bannerSlider = document.getElementById('banner-slider');
+            const bannerDotsContainer = document.getElementById('banner-dots');
+            if (bannerSlider && bannerDotsContainer) {
+                const slides = bannerSlider.querySelectorAll('a');
+                let currentSlide = 0;
+                let slideInterval;
+
+                if (slides.length > 0) {
+                    slides.forEach((_, index) => {
+                        const dot = document.createElement('button');
+                        dot.classList.add('w-3', 'h-3', 'rounded-full', 'bg-white', 'bg-opacity-50', 'smooth-transition');
+                        dot.addEventListener('click', () => {
+                            goToSlide(index);
+                            resetInterval();
+                        });
+                        bannerDotsContainer.appendChild(dot);
+                    });
+
+                    const dots = bannerDotsContainer.querySelectorAll('button');
+
+                    function goToSlide(slideIndex) {
+                        bannerSlider.style.transform = `translateX(-${slideIndex * 100}%)`;
+                        dots.forEach((dot, index) => {
+                            dot.classList.toggle('bg-yellow-500', index === slideIndex);
+                            dot.classList.toggle('w-5', index === slideIndex);
+                            dot.classList.toggle('bg-white', index !== slideIndex);
+                            dot.classList.toggle('bg-opacity-50', index !== slideIndex);
+                            dot.classList.toggle('w-3', index !== slideIndex);
+                        });
+                        currentSlide = slideIndex;
+                    }
+
+                    function nextSlide() {
+                        currentSlide = (currentSlide + 1) % slides.length;
+                        goToSlide(currentSlide);
+                    }
+
+                    function startInterval() {
+                        slideInterval = setInterval(nextSlide, 5000);
+                    }
+
+                    function resetInterval() {
+                        clearInterval(slideInterval);
+                        startInterval();
+                    }
+
+                    goToSlide(0);
+                    startInterval();
+                }
+            }
+
+            // Inicialização
+            updateCart();
+            orderPage.style.opacity = '0';
+            infoPage.style.opacity = '0';
+        });
+    </script>
+</body>
+
+</html>
+"
