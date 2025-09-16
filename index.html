@@ -9,13 +9,12 @@
     <title>Cardápio - La Mundo dos Sabores</title>
     <meta name="theme-color" content="#FBBF24" />
     <link rel="apple-touch-icon" href="https://placehold.co/192x192/000000/FBBF24?text=Sabores">
-    <link rel="manifest" href="manifest.json">
+    <!-- O manifest.json agora é gerado via JS para funcionar em qualquer ambiente -->
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- Fonte Poppins para todo o site -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
     <style>
@@ -36,7 +35,6 @@
             background-color: #000000;
         }
 
-        /* Fonte do título agora é Poppins Bold */
         .brand-title {
             font-family: 'Poppins', sans-serif;
             font-weight: 700;
@@ -53,17 +51,14 @@
 
         ::-webkit-scrollbar-thumb {
             background: #FBBF24;
-            /* Amarelo */
         }
 
         ::-webkit-scrollbar-thumb:hover {
             background: #F59E0B;
-            /* Amarelo mais escuro */
         }
 
         .category-title {
             background: linear-gradient(to right, #FBBF24, #FCD34D);
-            /* Gradiente Amarelo */
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -87,17 +82,12 @@
 
         .category-link.active {
             color: #FBBF24;
-            /* Amarelo */
             border-bottom: 2px solid #FBBF24;
-            /* Amarelo */
         }
 
         .bottom-nav-btn.active {
             color: #FBBF24;
-            /* Amarelo */
         }
-
-        /* --- TRANSIÇÕES --- */
 
         .card-bg,
         .smooth-transition {
@@ -107,14 +97,12 @@
         .card-bg:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 20px rgba(251, 191, 36, 0.1);
-            /* Sombra Amarela */
         }
 
         .page-container {
             transition: opacity 0.4s ease-in-out;
         }
 
-        /* Animação para a notificação (toast) */
         @keyframes slideInUp {
             from {
                 transform: translateY(100%);
@@ -142,8 +130,10 @@
         .toast-notification {
             position: fixed;
             bottom: 5.5rem;
+            /* Posição acima do menu inferior */
             right: 1.25rem;
             background-color: #22c55e;
+            /* Verde para sucesso */
             color: white;
             padding: 0.75rem 1.5rem;
             border-radius: 0.5rem;
@@ -156,17 +146,60 @@
             animation: fadeOutDown 0.5s ease-in-out forwards;
         }
 
-        /* Estilo responsivo para o banner */
+        .social-proof-toast {
+            position: fixed;
+            bottom: 5.5rem;
+            /* Mesma posição para não sobrepor */
+            left: 1.25rem;
+            background-color: #1a1a1a;
+            color: white;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            border: 2px solid #FBBF24;
+            box-shadow: 0 4px 10px rgba(251, 191, 36, 0.2);
+            z-index: 99;
+            animation: slideInUp 0.5s ease-in-out forwards;
+            font-size: 0.8rem;
+            max-width: 280px;
+            display: flex;
+            align-items: center;
+        }
+
+        .social-proof-toast.closing {
+            animation: fadeOutDown 0.5s ease-in-out forwards;
+        }
+
         #banner {
             height: 200px;
-            /* Altura para telas pequenas (mobile) */
         }
 
         @media (min-width: 768px) {
             #banner {
                 height: 300px;
-                /* Altura para telas maiores (desktop) */
             }
+
+            .social-proof-toast {
+                bottom: 1.25rem;
+            }
+
+            .toast-notification {
+                bottom: 1.25rem;
+            }
+        }
+
+        .pizza-option-label {
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            border: 1px solid #4a4a4a;
+            border-radius: 0.5rem;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .pizza-option-input:checked+.pizza-option-label {
+            background-color: #FBBF24;
+            color: #000000;
+            border-color: #FBBF24;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -200,23 +233,7 @@
             <!-- Navegação de Categorias (Desktop) -->
             <nav id="category-nav" class="hidden md:block bg-black shadow-md">
                 <div id="category-nav-container" class="container mx-auto px-6 py-3 overflow-x-auto whitespace-nowrap">
-                    <a href="#pizzas-grandes"
-                        class="category-link text-gray-300 hover:text-yellow-400 px-4 py-2 transition-colors duration-300">Pizzas
-                        Grandes</a>
-                    <a href="#pizzas-medias"
-                        class="category-link text-gray-300 hover:text-yellow-400 px-4 py-2 transition-colors duration-300">Pizzas
-                        Médias</a>
-                    <a href="#pizzas-pequenas"
-                        class="category-link text-gray-300 hover:text-yellow-400 px-4 py-2 transition-colors duration-300">Pizzas
-                        Pequenas</a>
-                    <a href="#hamburgueres"
-                        class="category-link text-gray-300 hover:text-yellow-400 px-4 py-2 transition-colors duration-300">Hambúrgueres</a>
-                    <a href="#promocao"
-                        class="category-link text-gray-300 hover:text-yellow-400 px-4 py-2 transition-colors duration-300">Promoção</a>
-                    <a href="#combos"
-                        class="category-link text-gray-300 hover:text-yellow-400 px-4 py-2 transition-colors duration-300">Combos</a>
-                    <a href="#refrigerantes"
-                        class="category-link text-gray-300 hover:text-yellow-400 px-4 py-2 transition-colors duration-300">Refrigerantes</a>
+                    <!-- Links de categoria serão gerados pelo JS -->
                 </div>
             </nav>
         </header>
@@ -227,7 +244,8 @@
                 <!-- Slide 1 -->
                 <a href="#promocao" class="w-full flex-shrink-0 h-full">
                     <div class="relative w-full h-full">
-                        <img src="imagens/banner/image.png" alt="Promoção 1" class="w-full h-full object-cover">
+                        <img src="https://placehold.co/1200x400/111111/FBBF24?text=Pizza+do+Dia" alt="Promoção 1"
+                            class="w-full h-full object-cover">
                         <div class="absolute inset-0 bg-black bg-opacity-40 flex items-end p-6">
                             <h3 class="text-white text-2xl font-bold">Pizza do Dia + Refri em Oferta!</h3>
                         </div>
@@ -244,297 +262,11 @@
                     </div>
                 </a>
             </div>
-            <!-- Navegação do Banner -->
-            <div id="banner-dots" class="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2 z-10">
-                <!-- Dots serão gerados via JS -->
-            </div>
+            <div id="banner-dots" class="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2 z-10"></div>
         </section>
 
-        <main class="container mx-auto p-4 md:p-6">
-            <div id="menu-items">
-                <!-- Seção de Pizzas Grandes -->
-                <div id="pizzas-grandes" class="pt-4 pb-12 mb-12 border-b border-yellow-900/50">
-                    <h2 class="text-3xl font-bold mb-6 border-l-4 border-yellow-500 pl-4 category-title">Pizzas Grandes
-                    </h2>
-                    <div class="grid grid-cols-2 lg:grid-cols-3 gap-4">
-                        <div class="card-bg rounded-lg shadow-lg overflow-hidden flex flex-col group">
-                            <div class="overflow-hidden aspect-square">
-                                <img src="imagens/pizzas/pizza1.png" alt="Imagem de Pizza"
-                                    class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110">
-                            </div>
-                            <div class="p-3 md:p-4 flex flex-col flex-grow">
-                                <h3 class="font-bold text-base md:text-xl mb-1 text-yellow-400">Calabresa Grande</h3>
-                                <p class="text-gray-400 text-xs md:text-sm mb-2 flex-grow">Mussarela, calabresa fatiada,
-                                    cebola e azeitonas.</p>
-                                <div class="flex justify-between items-center mt-2">
-                                    <span class="font-bold text-md md:text-lg">R$ 55,00</span>
-                                    <button onclick="addToOrder('Pizza Calabresa Grande', 55.00)"
-                                        class="bg-yellow-500 text-black px-3 py-1 md:px-4 md:py-2 rounded-lg hover:bg-yellow-600 smooth-transition text-sm md:text-base"><i
-                                            class="fas fa-plus md:mr-2"></i><span
-                                            class="hidden md:inline">Adicionar</span></button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-bg rounded-lg shadow-lg overflow-hidden flex flex-col group">
-                            <div class="overflow-hidden aspect-square">
-                                <img src="https://placehold.co/600x400/111111/FBBF24?text=Pizza+4+Queijos"
-                                    alt="Imagem de Pizza"
-                                    class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110">
-                            </div>
-                            <div class="p-3 md:p-4 flex flex-col flex-grow">
-                                <h3 class="font-bold text-base md:text-xl mb-1 text-yellow-400">4 Queijos Grande</h3>
-                                <p class="text-gray-400 text-xs md:text-sm mb-2 flex-grow">Mussarela, provolone,
-                                    parmesão e catupiry.</p>
-                                <div class="flex justify-between items-center mt-2">
-                                    <span class="font-bold text-md md:text-lg">R$ 58,00</span>
-                                    <button onclick="addToOrder('Pizza 4 Queijos Grande', 58.00)"
-                                        class="bg-yellow-500 text-black px-3 py-1 md:px-4 md:py-2 rounded-lg hover:bg-yellow-600 smooth-transition text-sm md:text-base"><i
-                                            class="fas fa-plus md:mr-2"></i><span
-                                            class="hidden md:inline">Adicionar</span></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Seção de Pizzas Médias -->
-                <div id="pizzas-medias" class="pt-4 pb-12 mb-12 border-b border-yellow-900/50">
-                    <h2 class="text-3xl font-bold mb-6 border-l-4 border-yellow-500 pl-4 category-title">Pizzas Médias
-                    </h2>
-                    <div class="grid grid-cols-2 lg:grid-cols-3 gap-4">
-                        <div class="card-bg rounded-lg shadow-lg overflow-hidden flex flex-col group">
-                            <div class="overflow-hidden aspect-square">
-                                <img src="https://placehold.co/600x400/111111/FBBF24?text=Pizza+Frango"
-                                    alt="Imagem de Pizza"
-                                    class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110">
-                            </div>
-                            <div class="p-3 md:p-4 flex flex-col flex-grow">
-                                <h3 class="font-bold text-base md:text-xl mb-1 text-yellow-400">Frango com Catupiry
-                                    Média</h3>
-                                <p class="text-gray-400 text-xs md:text-sm mb-2 flex-grow">Mussarela, frango desfiado,
-                                    catupiry e milho.</p>
-                                <div class="flex justify-between items-center mt-2">
-                                    <span class="font-bold text-md md:text-lg">R$ 45,00</span>
-                                    <button onclick="addToOrder('Pizza Frango Média', 45.00)"
-                                        class="bg-yellow-500 text-black px-3 py-1 md:px-4 md:py-2 rounded-lg hover:bg-yellow-600 smooth-transition text-sm md:text-base"><i
-                                            class="fas fa-plus md:mr-2"></i><span
-                                            class="hidden md:inline">Adicionar</span></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Seção de Pizzas Pequenas -->
-                <div id="pizzas-pequenas" class="pt-4 pb-12 mb-12 border-b border-yellow-900/50">
-                    <h2 class="text-3xl font-bold mb-6 border-l-4 border-yellow-500 pl-4 category-title">Pizzas Pequenas
-                    </h2>
-                    <div class="grid grid-cols-2 lg:grid-cols-3 gap-4">
-                        <div class="card-bg rounded-lg shadow-lg overflow-hidden flex flex-col group">
-                            <div class="overflow-hidden aspect-square">
-                                <img src="https://placehold.co/600x400/111111/FBBF24?text=Pizza+Mussarela"
-                                    alt="Imagem de Pizza"
-                                    class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110">
-                            </div>
-                            <div class="p-3 md:p-4 flex flex-col flex-grow">
-                                <h3 class="font-bold text-base md:text-xl mb-1 text-yellow-400">Mussarela Pequena</h3>
-                                <p class="text-gray-400 text-xs md:text-sm mb-2 flex-grow">Mussarela, molho de tomate e
-                                    orégano.</p>
-                                <div class="flex justify-between items-center mt-2">
-                                    <span class="font-bold text-md md:text-lg">R$ 35,00</span>
-                                    <button onclick="addToOrder('Pizza Mussarela Pequena', 35.00)"
-                                        class="bg-yellow-500 text-black px-3 py-1 md:px-4 md:py-2 rounded-lg hover:bg-yellow-600 smooth-transition text-sm md:text-base"><i
-                                            class="fas fa-plus md:mr-2"></i><span
-                                            class="hidden md:inline">Adicionar</span></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Seção de Hambúrgueres -->
-                <div id="hamburgueres" class="pt-4 pb-12 mb-12 border-b border-yellow-900/50">
-                    <h2 class="text-3xl font-bold mb-6 border-l-4 border-yellow-500 pl-4 category-title">Hambúrgueres
-                    </h2>
-                    <div class="grid grid-cols-2 lg:grid-cols-3 gap-4">
-                        <div class="card-bg rounded-lg shadow-lg overflow-hidden flex flex-col group">
-                            <div class="overflow-hidden aspect-square">
-                                <img src="https://placehold.co/600x400/111111/FBBF24?text=Hamb%C3%BArguer"
-                                    alt="Imagem de Hambúrguer"
-                                    class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110">
-                            </div>
-                            <div class="p-3 md:p-4 flex flex-col flex-grow">
-                                <h3 class="font-bold text-base md:text-xl mb-1 text-yellow-400">Hambúrguer Especial da
-                                    Casa</h3>
-                                <p class="text-gray-400 text-xs md:text-sm mb-2 flex-grow">Hambúrguer, mussarela, molho
-                                    BBQ, salada, molho de queijos.</p>
-                                <div class="flex justify-between items-center mt-2">
-                                    <span class="font-bold text-md md:text-lg">R$ 10,00</span>
-                                    <button onclick="addToOrder('Hambúrguer Especial da Casa', 10.00)"
-                                        class="bg-yellow-500 text-black px-3 py-1 md:px-4 md:py-2 rounded-lg hover:bg-yellow-600 smooth-transition text-sm md:text-base"><i
-                                            class="fas fa-plus md:mr-2"></i><span
-                                            class="hidden md:inline">Adicionar</span></button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-bg rounded-lg shadow-lg overflow-hidden flex flex-col group">
-                            <div class="overflow-hidden aspect-square">
-                                <img src="https://placehold.co/600x400/111111/FBBF24?text=Hamb%C3%BArguer"
-                                    alt="Imagem de Hambúrguer"
-                                    class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110">
-                            </div>
-                            <div class="p-3 md:p-4 flex flex-col flex-grow">
-                                <h3 class="font-bold text-base md:text-xl mb-1 text-yellow-400">Hambúrguer Artesanal da
-                                    Casa</h3>
-                                <p class="text-gray-400 text-xs md:text-sm mb-2 flex-grow">Carne artesanal, queijo
-                                    cheddar, bacon, molho BBQ, salada, molho de queijos e ervas.</p>
-                                <div class="flex justify-between items-center mt-2">
-                                    <span class="font-bold text-md md:text-lg">R$ 20,00</span>
-                                    <button onclick="addToOrder('Hambúrguer Artesanal da Casa', 20.00)"
-                                        class="bg-yellow-500 text-black px-3 py-1 md:px-4 md:py-2 rounded-lg hover:bg-yellow-600 smooth-transition text-sm md:text-base"><i
-                                            class="fas fa-plus md:mr-2"></i><span
-                                            class="hidden md:inline">Adicionar</span></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Seção de Promoção -->
-                <div id="promocao" class="pt-4 pb-12 mb-12 border-b border-yellow-900/50">
-                    <h2 class="text-3xl font-bold mb-6 border-l-4 border-yellow-500 pl-4 category-title">Promoção</h2>
-                    <div class="grid grid-cols-2 lg:grid-cols-3 gap-4">
-                        <div class="card-bg rounded-lg shadow-lg overflow-hidden flex flex-col group">
-                            <div class="overflow-hidden aspect-square">
-                                <img src="https://placehold.co/600x400/111111/FBBF24?text=Promo+Pizza"
-                                    alt="Imagem de Promoção"
-                                    class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110">
-                            </div>
-                            <div class="p-3 md:p-4 flex flex-col flex-grow">
-                                <h3 class="font-bold text-base md:text-xl mb-1 text-yellow-400">Pizza do Dia + Refri
-                                </h3>
-                                <p class="text-gray-400 text-xs md:text-sm mb-2 flex-grow">1 Pizza Média de Calabresa +
-                                    1 Refrigerante 1L.</p>
-                                <div class="flex justify-between items-center mt-2">
-                                    <span class="font-bold text-md md:text-lg">R$ 49,90</span>
-                                    <button onclick="addToOrder('Promo Pizza do Dia', 49.90)"
-                                        class="bg-yellow-500 text-black px-3 py-1 md:px-4 md:py-2 rounded-lg hover:bg-yellow-600 smooth-transition text-sm md:text-base"><i
-                                            class="fas fa-plus md:mr-2"></i><span
-                                            class="hidden md:inline">Adicionar</span></button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-bg rounded-lg shadow-lg overflow-hidden flex flex-col group">
-                            <div class="overflow-hidden aspect-square">
-                                <img src="https://placehold.co/600x400/111111/FBBF24?text=Promo+Burger"
-                                    alt="Imagem de Promoção"
-                                    class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110">
-                            </div>
-                            <div class="p-3 md:p-4 flex flex-col flex-grow">
-                                <h3 class="font-bold text-base md:text-xl mb-1 text-yellow-400">Compre 1 Leve 2</h3>
-                                <p class="text-gray-400 text-xs md:text-sm mb-2 flex-grow">Compre um Hambúrguer
-                                    Artesanal e leve um Especial da Casa.</p>
-                                <div class="flex justify-between items-center mt-2">
-                                    <span class="font-bold text-md md:text-lg">R$ 20,00</span>
-                                    <button onclick="addToOrder('Promo Compre 1 Leve 2', 20.00)"
-                                        class="bg-yellow-500 text-black px-3 py-1 md:px-4 md:py-2 rounded-lg hover:bg-yellow-600 smooth-transition text-sm md:text-base"><i
-                                            class="fas fa-plus md:mr-2"></i><span
-                                            class="hidden md:inline">Adicionar</span></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Combos -->
-                <div id="combos" class="pt-4 pb-12 mb-12 border-b border-yellow-900/50">
-                    <h2 class="text-3xl font-bold mb-6 border-l-4 border-yellow-500 pl-4 category-title">Combos</h2>
-                    <div class="grid grid-cols-2 lg:grid-cols-3 gap-4">
-                        <div class="card-bg rounded-lg shadow-lg overflow-hidden flex flex-col group">
-                            <div class="overflow-hidden aspect-square">
-                                <img src="https://placehold.co/600x400/111111/FBBF24?text=Combo" alt="Imagem de Combo"
-                                    class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110">
-                            </div>
-                            <div class="p-3 md:p-4 flex flex-col flex-grow">
-                                <h3 class="font-bold text-base md:text-xl mb-1 text-yellow-400">#01 Especial da Casa
-                                </h3>
-                                <p class="text-gray-400 text-xs md:text-sm mb-2 flex-grow">Hambúrguer + Batata chips +
-                                    Refrigerante copo.</p>
-                                <div class="flex justify-between items-center mt-2">
-                                    <span class="font-bold text-md md:text-lg">R$ 12,00</span>
-                                    <button onclick="addToOrder('#01 Especial da Casa', 12.00)"
-                                        class="bg-yellow-500 text-black px-3 py-1 md:px-4 md:py-2 rounded-lg hover:bg-yellow-600 smooth-transition text-sm md:text-base"><i
-                                            class="fas fa-plus md:mr-2"></i><span
-                                            class="hidden md:inline">Adicionar</span></button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-bg rounded-lg shadow-lg overflow-hidden flex flex-col group">
-                            <div class="overflow-hidden aspect-square">
-                                <img src="https://placehold.co/600x400/111111/FBBF24?text=Combo" alt="Imagem de Combo"
-                                    class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110">
-                            </div>
-                            <div class="p-3 md:p-4 flex flex-col flex-grow">
-                                <h3 class="font-bold text-base md:text-xl mb-1 text-yellow-400">#02 Duplo Cheese</h3>
-                                <p class="text-gray-400 text-xs md:text-sm mb-2 flex-grow">Duplo Cheese + Ks + Batata
-                                    Chips.</p>
-                                <div class="flex justify-between items-center mt-2">
-                                    <span class="font-bold text-md md:text-lg">R$ 28,00</span>
-                                    <button onclick="addToOrder('#02 Duplo Cheese', 28.00)"
-                                        class="bg-yellow-500 text-black px-3 py-1 md:px-4 md:py-2 rounded-lg hover:bg-yellow-600 smooth-transition text-sm md:text-base"><i
-                                            class="fas fa-plus md:mr-2"></i><span
-                                            class="hidden md:inline">Adicionar</span></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Refrigerantes -->
-                <div id="refrigerantes" class="pt-4">
-                    <h2 class="text-3xl font-bold mb-6 border-l-4 border-yellow-500 pl-4 category-title">Refrigerantes
-                    </h2>
-                    <div class="grid grid-cols-2 lg:grid-cols-3 gap-4">
-                        <div class="card-bg rounded-lg shadow-lg overflow-hidden flex flex-col group">
-                            <div class="overflow-hidden aspect-square">
-                                <img src="https://placehold.co/600x400/111111/FBBF24?text=Coca-Cola"
-                                    alt="Imagem de Refrigerante"
-                                    class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110">
-                            </div>
-                            <div class="p-3 md:p-4 flex flex-col flex-grow">
-                                <h3 class="font-bold text-base md:text-xl mb-1 text-yellow-400">Coca-Cola Lata</h3>
-                                <p class="text-gray-400 text-xs md:text-sm mb-2 flex-grow">Lata de 350ml.</p>
-                                <div class="flex justify-between items-center mt-2">
-                                    <span class="font-bold text-md md:text-lg">R$ 7,00</span>
-                                    <button onclick="addToOrder('Coca-Cola Lata', 7.00)"
-                                        class="bg-yellow-500 text-black px-3 py-1 md:px-4 md:py-2 rounded-lg hover:bg-yellow-600 smooth-transition text-sm md:text-base"><i
-                                            class="fas fa-plus md:mr-2"></i><span
-                                            class="hidden md:inline">Adicionar</span></button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-bg rounded-lg shadow-lg overflow-hidden flex flex-col group">
-                            <div class="overflow-hidden aspect-square">
-                                <img src="https://placehold.co/600x400/111111/FBBF24?text=Guaran%C3%A1"
-                                    alt="Imagem de Refrigerante"
-                                    class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110">
-                            </div>
-                            <div class="p-3 md:p-4 flex flex-col flex-grow">
-                                <h3 class="font-bold text-base md:text-xl mb-1 text-yellow-400">Guaraná Antártica 1L
-                                </h3>
-                                <p class="text-gray-400 text-xs md:text-sm mb-2 flex-grow">Garrafa de 1 Litro.</p>
-                                <div class="flex justify-between items-center mt-2">
-                                    <span class="font-bold text-md md:text-lg">R$ 9,00</span>
-                                    <button onclick="addToOrder('Guaraná 1L', 9.00)"
-                                        class="bg-yellow-500 text-black px-3 py-1 md:px-4 md:py-2 rounded-lg hover:bg-yellow-600 smooth-transition text-sm md:text-base"><i
-                                            class="fas fa-plus md:mr-2"></i><span
-                                            class="hidden md:inline">Adicionar</span></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <main id="menu-items-container" class="container mx-auto p-4 md:p-6">
+            <!-- Itens do menu serão gerados e inseridos aqui pelo JavaScript -->
         </main>
     </div>
 
@@ -542,11 +274,8 @@
     <div id="order-page" class="page-container hidden">
         <div class="container mx-auto p-6">
             <div class="card-bg rounded-lg shadow-2xl p-8 max-w-2xl mx-auto relative">
-                <!-- Botão de Fechar (X) -->
                 <button id="close-order-page-btn"
-                    class="absolute top-4 right-4 text-gray-400 hover:text-white text-3xl smooth-transition z-10">
-                    &times;
-                </button>
+                    class="absolute top-4 right-4 text-gray-400 hover:text-white text-3xl smooth-transition z-10">&times;</button>
                 <div class="flex items-center mb-6">
                     <i class="fas fa-receipt text-yellow-500 text-3xl mr-4"></i>
                     <h2 class="text-3xl font-bold text-white">Meu Pedido</h2>
@@ -569,19 +298,61 @@
                             <select id="delivery-option"
                                 class="bg-gray-800 border border-gray-600 text-white text-sm rounded-lg focus:ring-yellow-500 focus:border-yellow-500 block w-full p-2.5">
                                 <option value="local">Retirar no Local</option>
-                                <option value="vila_neves">Vila Neves</option>
-                                <option value="sitio">Sítio</option>
+                                <option value="garanhuns">Garanhuns</option>
                             </select>
                         </div>
-                        <div id="sitio-selection" class="hidden">
-                            <label for="sitio-list" class="block mb-2 text-sm font-medium text-gray-300">Selecione o
-                                Sítio</label>
-                            <select id="sitio-list"
+                        <div id="garanhuns-selection" class="hidden">
+                            <label for="bairro-list" class="block mb-2 text-sm font-medium text-gray-300">Selecione o
+                                Bairro</label>
+                            <select id="bairro-list"
                                 class="bg-gray-800 border border-gray-600 text-white text-sm rounded-lg focus:ring-yellow-500 focus:border-yellow-500 block w-full p-2.5">
                                 <option value="0">Selecione...</option>
-                                <option value="5">Sítio A - R$ 5,00</option>
-                                <option value="7">Sítio B - R$ 7,00</option>
-                                <option value="10">Sítio C - R$ 10,00</option>
+                                <option value="2">Aluízio Pinto - R$ 2,00</option>
+                                <option value="2">Antonio Cordeiro - R$ 2,00</option>
+                                <option value="2">Boa Vista - R$ 2,00</option>
+                                <option value="2">Bougainville - R$ 2,00</option>
+                                <option value="2">Brahma - R$ 2,00</option>
+                                <option value="2">Brasília - R$ 2,00</option>
+                                <option value="2">Centro - R$ 2,00</option>
+                                <option value="2">Cidade das Flores - R$ 2,00</option>
+                                <option value="2">Cohab 1 - R$ 2,00</option>
+                                <option value="2">Cohab 2 (Francisco Figueira) - R$ 2,00</option>
+                                <option value="2">Cohab 3 (José Maria Dourado) - R$ 2,00</option>
+                                <option value="2">Condomínio Alameda da Serra - R$ 2,00</option>
+                                <option value="2">Condomínio Bellevue - R$ 2,00</option>
+                                <option value="2">Condomínio Bosque Helópolis - R$ 2,00</option>
+                                <option value="2">Condomínio Imperio - R$ 2,00</option>
+                                <option value="2">Condomínio Mont Serrat - R$ 2,00</option>
+                                <option value="2">Condomínio Monte Verde - R$ 2,00</option>
+                                <option value="2">Condomínio Morada Nobre - R$ 2,00</option>
+                                <option value="2">Condomínio Portal das Colinas - R$ 2,00</option>
+                                <option value="2">Condomínio Residencial Valle Verde - R$ 2,00</option>
+                                <option value="2">Condomínio Vale Verde - R$ 2,00</option>
+                                <option value="2">Condomínio Vila das Palmeiras - R$ 2,00</option>
+                                <option value="2">Dom Helder Câmara - R$ 2,00</option>
+                                <option value="2">Dom Thiago Postma - R$ 2,00</option>
+                                <option value="2">Francisco Simão Figueira - R$ 2,00</option>
+                                <option value="2">Heliópolis - R$ 2,00</option>
+                                <option value="2">Indiano - R$ 2,00</option>
+                                <option value="2">Jardim Petrópolis - R$ 2,00</option>
+                                <option value="2">José Maria Dourado - R$ 2,00</option>
+                                <option value="2">Lacerdópolis - R$ 2,00</option>
+                                <option value="2">Liberdade - R$ 2,00</option>
+                                <option value="2">Loteamento Jacaranda - R$ 2,00</option>
+                                <option value="2">Magano - R$ 2,00</option>
+                                <option value="2">Manoel Camelo - R$ 2,00</option>
+                                <option value="2">Manoel Xeu - R$ 2,00</option>
+                                <option value="2">Massaranduba - R$ 2,00</option>
+                                <option value="2">Mundaú - R$ 2,00</option>
+                                <option value="2">Parque Fênix - R$ 2,00</option>
+                                <option value="2">Santo Antonio - R$ 2,00</option>
+                                <option value="2">São José - R$ 2,00</option>
+                                <option value="2">São Vicente 3 - R$ 2,00</option>
+                                <option value="2">Severiano de Moraes Filho - R$ 2,00</option>
+                                <option value="2">Sítio Papa Terra - R$ 2,00</option>
+                                <option value="2">Viana e Moura - R$ 2,00</option>
+                                <option value="2">Viana e Moura 3 - R$ 2,00</option>
+                                <option value="2">Vila do Quartel - R$ 2,00</option>
                             </select>
                         </div>
                         <div>
@@ -589,7 +360,7 @@
                                 Referência</label>
                             <input type="text" id="address"
                                 class="bg-gray-800 border border-gray-600 text-white text-sm rounded-lg focus:ring-yellow-500 focus:border-yellow-500 block w-full p-2.5"
-                                placeholder="Ex: Rua Principal, 123">
+                                placeholder="Ex: Rua, Nº, Bairro...">
                         </div>
                         <div>
                             <label for="client-name" class="block mb-2 text-sm font-medium text-gray-300">Seu
@@ -597,6 +368,13 @@
                             <input type="text" id="client-name"
                                 class="bg-gray-800 border border-gray-600 text-white text-sm rounded-lg focus:ring-yellow-500 focus:border-yellow-500 block w-full p-2.5"
                                 placeholder="Como podemos te chamar?">
+                        </div>
+                        <div>
+                            <label for="client-whatsapp" class="block mb-2 text-sm font-medium text-gray-300">Seu
+                                WhatsApp</label>
+                            <input type="tel" id="client-whatsapp"
+                                class="bg-gray-800 border border-gray-600 text-white text-sm rounded-lg focus:ring-yellow-500 focus:border-yellow-500 block w-full p-2.5"
+                                placeholder="(XX) 9XXXX-XXXX">
                         </div>
                     </div>
                 </div>
@@ -615,6 +393,71 @@
         </div>
     </div>
 
+    <!-- Modal de Opções de Pizza -->
+    <div id="pizza-options-modal"
+        class="hidden fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4">
+        <div
+            class="card-bg rounded-lg shadow-xl p-6 max-w-lg w-full mx-auto text-center relative max-h-[90vh] overflow-y-auto">
+            <button id="close-pizza-modal-btn"
+                class="absolute top-3 right-4 text-gray-400 hover:text-white text-3xl smooth-transition z-10">&times;</button>
+            <img id="modal-pizza-img" src="" alt="Imagem da Pizza"
+                class="w-40 h-40 object-contain mx-auto rounded-full mb-4">
+            <h3 id="modal-pizza-name" class="text-2xl font-bold mb-4 text-yellow-400">Nome da Pizza</h3>
+
+            <!-- Opções de Tamanho -->
+            <div class="mb-5">
+                <h4 class="font-semibold text-lg mb-3">Escolha o tamanho:</h4>
+                <div id="modal-pizza-sizes" class="flex justify-center items-center gap-3 flex-wrap">
+                    <!-- Tamanhos serão gerados pelo JS -->
+                </div>
+            </div>
+
+            <!-- Opção Inteira ou Meio a Meio -->
+            <div class="mb-5">
+                <h4 class="font-semibold text-lg mb-3">Como você quer sua pizza?</h4>
+                <div id="modal-pizza-type" class="flex justify-center items-center gap-3">
+                    <div>
+                        <input type="radio" name="pizza_type" id="type_inteira" value="inteira"
+                            class="hidden pizza-option-input" checked>
+                        <label for="type_inteira" class="pizza-option-label">Inteira</label>
+                    </div>
+                    <div>
+                        <input type="radio" name="pizza_type" id="type_meio_a_meio" value="meio_a_meio"
+                            class="hidden pizza-option-input">
+                        <label for="type_meio_a_meio" class="pizza-option-label">Meio a Meio</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Seleção da Segunda Metade (escondido por padrão) -->
+            <div id="second-flavor-container" class="mb-6 hidden">
+                <h4 class="font-semibold text-lg mb-3">Escolha o 2º sabor:</h4>
+                <select id="second-flavor-select"
+                    class="bg-gray-800 border border-gray-600 text-white text-sm rounded-lg focus:ring-yellow-500 focus:border-yellow-500 block w-full p-2.5">
+                    <!-- Opções de sabores serão geradas pelo JS -->
+                </select>
+            </div>
+
+            <!-- Seleção da Borda -->
+            <div class="mb-6">
+                <h4 class="font-semibold text-lg mb-3">Adicionar borda?</h4>
+                <select id="borda-select"
+                    class="bg-gray-800 border border-gray-600 text-white text-sm rounded-lg focus:ring-yellow-500 focus:border-yellow-500 block w-full p-2.5">
+                    <!-- Opções de borda serão geradas pelo JS -->
+                </select>
+            </div>
+
+            <div class="flex justify-between items-center mt-6 pt-4 border-t border-gray-700">
+                <span id="modal-pizza-price" class="font-bold text-2xl text-yellow-500">R$ 0,00</span>
+                <button id="confirm-add-pizza-btn"
+                    class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg smooth-transition">
+                    Adicionar ao Pedido
+                </button>
+            </div>
+        </div>
+    </div>
+
+
     <!-- Modal de Confirmação -->
     <div id="confirmation-modal"
         class="hidden fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center">
@@ -631,13 +474,11 @@
     <div id="bottom-nav"
         class="md:hidden fixed bottom-0 left-0 right-0 bg-gray-900 border-t border-yellow-800/50 flex justify-around items-center py-3 px-2 z-30">
         <button id="bottom-nav-menu"
-            class="bottom-nav-btn flex flex-col items-center text-gray-300 hover:text-yellow-500 transition-colors active">
-            <i class="fas fa-utensils text-xl"></i><span class="text-xs mt-1">Cardápio</span>
-        </button>
+            class="bottom-nav-btn flex flex-col items-center text-gray-300 hover:text-yellow-500 transition-colors active"><i
+                class="fas fa-utensils text-xl"></i><span class="text-xs mt-1">Cardápio</span></button>
         <button id="bottom-nav-categories"
-            class="bottom-nav-btn flex flex-col items-center text-gray-300 hover:text-yellow-500 transition-colors">
-            <i class="fas fa-list-ul text-xl"></i><span class="text-xs mt-1">Categorias</span>
-        </button>
+            class="bottom-nav-btn flex flex-col items-center text-gray-300 hover:text-yellow-500 transition-colors"><i
+                class="fas fa-list-ul text-xl"></i><span class="text-xs mt-1">Categorias</span></button>
         <button id="bottom-nav-order"
             class="bottom-nav-btn flex flex-col items-center text-gray-300 hover:text-yellow-500 transition-colors relative">
             <i class="fas fa-shopping-cart text-xl"></i><span class="text-xs mt-1">Ver Pedido</span>
@@ -645,17 +486,15 @@
                 class="absolute -top-1 -right-1 bg-red-600 text-xs font-semibold rounded-full h-5 w-5 flex items-center justify-center">0</span>
         </button>
         <button id="bottom-nav-info"
-            class="bottom-nav-btn flex flex-col items-center text-gray-300 hover:text-yellow-500 transition-colors">
-            <i class="fas fa-info-circle text-xl"></i><span class="text-xs mt-1">Info</span>
-        </button>
+            class="bottom-nav-btn flex flex-col items-center text-gray-300 hover:text-yellow-500 transition-colors"><i
+                class="fas fa-info-circle text-xl"></i><span class="text-xs mt-1">Info</span></button>
     </div>
 
     <!-- Tela de Informações -->
     <div id="info-page" class="page-container hidden">
         <div class="container mx-auto p-6">
             <div class="card-bg rounded-lg shadow-2xl p-8 max-w-2xl mx-auto">
-                <div class="flex items-center mb-6">
-                    <i class="fas fa-info-circle text-yellow-500 text-3xl mr-4"></i>
+                <div class="flex items-center mb-6"><i class="fas fa-info-circle text-yellow-500 text-3xl mr-4"></i>
                     <h2 class="text-3xl font-bold text-white">Sobre a La Mundo dos Sabores</h2>
                 </div>
                 <div class="space-y-6 text-gray-300">
@@ -672,9 +511,8 @@
                         <p><i class="fab fa-whatsapp mr-2"></i>(87) 99990-4732</p>
                     </div>
                     <div>
-                        <h3 class="font-semibold text-lg text-yellow-400 mb-2">Siga-nos</h3>
-                        <a href="#" class="hover:text-yellow-500"><i
-                                class="fab fa-instagram mr-2"></i>@lamundodossabores</a>
+                        <h3 class="font-semibold text-lg text-yellow-400 mb-2">Siga-nos</h3><a href="#"
+                            class="hover:text-yellow-500"><i class="fab fa-instagram mr-2"></i>@lamundodossabores</a>
                     </div>
                 </div>
                 <div class="mt-8 pt-6 border-t border-gray-700 flex justify-end">
@@ -691,86 +529,231 @@
         <div id="category-modal-content"
             class="absolute bottom-0 left-0 right-0 bg-gray-900 rounded-t-2xl p-6 transform translate-y-full transition-transform duration-300">
             <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-bold text-yellow-400">Categorias</h3>
-                <button id="close-category-modal" class="text-2xl">&times;</button>
+                <h3 class="text-xl font-bold text-yellow-400">Categorias</h3><button id="close-category-modal"
+                    class="text-2xl">&times;</button>
             </div>
-            <div class="flex flex-col space-y-4">
-                <a href="#pizzas-grandes"
-                    class="modal-category-link text-lg text-gray-300 hover:text-yellow-500 py-2">Pizzas Grandes</a>
-                <a href="#pizzas-medias"
-                    class="modal-category-link text-lg text-gray-300 hover:text-yellow-500 py-2">Pizzas Médias</a>
-                <a href="#pizzas-pequenas"
-                    class="modal-category-link text-lg text-gray-300 hover:text-yellow-500 py-2">Pizzas Pequenas</a>
-                <a href="#hamburgueres"
-                    class="modal-category-link text-lg text-gray-300 hover:text-yellow-500 py-2">Hambúrgueres</a>
-                <a href="#promocao"
-                    class="modal-category-link text-lg text-gray-300 hover:text-yellow-500 py-2">Promoção</a>
-                <a href="#combos"
-                    class="modal-category-link text-lg text-gray-300 hover:text-yellow-500 py-2">Combos</a>
-                <a href="#refrigerantes"
-                    class="modal-category-link text-lg text-gray-300 hover:text-yellow-500 py-2">Refrigerantes</a>
+            <div id="modal-category-links-container" class="flex flex-col space-y-4">
+                <!-- Links de categoria para modal serão gerados pelo JS -->
             </div>
         </div>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            // --- Lógica PWA ---
-            const manifest = {
-                "name": "La Mundo dos Sabores",
-                "short_name": "Sabores",
-                "start_url": window.location.href,
-                "display": "standalone",
-                "background_color": "#000000",
-                "theme_color": "#FBBF24",
-                "description": "Cardápio Digital da La Mundo dos Sabores",
-                "icons": [{
-                    "src": "https://placehold.co/192x192/000000/FBBF24?text=Sabores",
-                    "sizes": "192x192",
-                    "type": "image/png"
-                }, {
-                    "src": "https://placehold.co/512x512/000000/FBBF24?text=Sabores",
-                    "sizes": "512x512",
-                    "type": "image/png"
-                }]
-            };
 
-            const manifestString = JSON.stringify(manifest);
-            const manifestBlob = new Blob([manifestString], { type: 'application/json' });
-            const manifestUrl = URL.createObjectURL(manifestBlob);
-            const link = document.querySelector('link[rel="manifest"]') || document.createElement('link');
-            link.rel = 'manifest';
-            link.href = manifestUrl;
-            document.head.appendChild(link);
-
-            let deferredPrompt;
-            const installBtn = document.getElementById('install-app-btn');
-
-            if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
-                installBtn.classList.add('hidden');
-            }
-
-            window.addEventListener('beforeinstallprompt', (e) => {
-                e.preventDefault();
-                deferredPrompt = e;
-                if (!window.matchMedia('(display-mode: standalone)').matches && !window.navigator.standalone) {
-                    installBtn.classList.remove('hidden');
+            // =================================================================
+            //  1. BASE DE DADOS DOS PRODUTOS E OPÇÕES
+            // =================================================================
+            const menuData = [
+                {
+                    category: "Pizzas Clássicas",
+                    id: "pizzas_classicas",
+                    title: "Pizzas Clássicas",
+                    items: [
+                        { id: 'a-moda-chefe', name: 'A Moda do Chefe', description: 'Frango desfiado, palmito, ovos, bacon, catupiry', prices: { p: 30, m: 35, g: 40.00 } },
+                        { id: 'atum', name: 'Atum', description: 'Atum, mussarela, cebola, orégano', prices: { p: 26, m: 31, g: 36.00 } },
+                        { id: 'bacon', name: 'Bacon', description: 'Molho de tomate, mussarela, bacon, ovos, tomate', prices: { p: 28, m: 33, g: 38.00 } },
+                        { id: 'baiana', name: 'Baiana', description: 'Molho de tomate, calabresa, ovos, cebola, mussarela, pimenta', prices: { p: 25, m: 30, g: 35.00 } },
+                        { id: 'brasileira-pizza', name: 'Brasileira Pizza', description: 'Mussarela, presunto, milho, ervilha, tomate', prices: { p: 26, m: 31, g: 36.00 } },
+                        { id: 'calabresa', name: 'Calabresa', description: 'Molho de tomate, calabresa, cebola', prices: { p: 26, m: 31, g: 36.00 } },
+                        { id: 'calabresa-3-queijos', name: 'Calabresa 3 Queijos', description: 'Molho de tomate, calabresa, mussarela, catupiry, cheddar', prices: { p: 30, m: 35, g: 40.00 } },
+                        { id: 'caipira', name: 'Caipira', description: 'Molho de tomate, mussarela, frango desfiado, cebola, milho, tomate, bacon', prices: { p: 29, m: 34, g: 39.00 } },
+                        { id: 'charque', name: 'Charque', description: 'Molho de tomate, mussarela, charque, tomate, azeitona', prices: { p: 30, m: 35, g: 40.00 } },
+                        { id: 'dois-queijos', name: 'Dois Queijos', description: 'Molho de tomate, mussarela, catupiry', prices: { p: 25, m: 30, g: 35.00 } },
+                        { id: 'tres-queijos', name: 'Três Queijos', description: 'Molho de tomate, mussarela, catupiry, parmesão', prices: { p: 26, m: 31, g: 36.00 } },
+                        { id: 'quatro-queijos', name: 'Quatro Queijos', description: 'Molho de tomate, mussarela, catupiry, cheddar, parmesão, orégano', prices: { p: 27, m: 32, g: 37.00 } },
+                        { id: 'do-pizzaiolo', name: 'Do Pizzaiolo', description: 'Molho de tomate, mussarela, calabresa, bacon, palmito, queijo provolone, milho, ovos', prices: { p: 30, m: 35, g: 40.00 } },
+                        { id: 'favorita', name: 'Favorita', description: 'Molho de tomate, calabresa, ovos, calabresa, palmito, azeitona', prices: { p: 27, m: 32, g: 37.00 } },
+                        { id: 'frango-catupiry', name: 'Frango c/ Catupiry', description: 'Molho de tomate, frango desfiado e catupiry', prices: { p: 25, m: 30, g: 35.00 } },
+                        { id: 'frango-cheddar', name: 'Frango c/ Cheddar', description: 'Molho de tomate, frango desfiado, cheddar', prices: { p: 25, m: 30, g: 35.00 } },
+                        { id: 'frango-mussarela', name: 'Frango c/ Mussarela', description: 'Molho de tomate, frango desfiado, mussarela', prices: { p: 26, m: 31, g: 36.00 } },
+                        { id: 'italiana', name: 'Italiana', description: 'Mussarela, salame italiano, molho de tomate', prices: { p: 27, m: 32, g: 37.00 } },
+                        { id: 'marguerita', name: 'Marguerita', description: 'Molho de tomate, mussarela, parmesão, tomate e manjericão', prices: { p: 26, m: 31, g: 36.00 } },
+                        { id: 'mussarela', name: 'Mussarela', description: 'Molho de tomate, mussarela, tomate, orégano', prices: { p: 26, m: 31, g: 36.00 } },
+                        { id: 'mussa-palha', name: 'Mussa Palha', description: 'Molho de tomate, mussarela, tomate, batata palha', prices: { p: 27, m: 32, g: 37.00 } },
+                        { id: 'napolitana', name: 'Napolitana', description: 'Molho de tomate, mussarela, parmesão, presunto, tomate, orégano', prices: { p: 26, m: 31, g: 36.00 } },
+                        { id: 'palmito', name: 'Palmito', description: 'Presunto, palmito, mussarela, orégano', prices: { p: 27, m: 32, g: 37.00 } },
+                        { id: 'paulista', name: 'Paulista', description: 'Molho de tomate, mussarela, presunto, palmito, bacon, tomate', prices: { p: 27, m: 32, g: 37.00 } },
+                        { id: 'pepperoni', name: 'Pepperoni', description: 'Molho de tomate, mussarela, salame, pepperoni, orégano', prices: { p: 27, m: 32, g: 37.00 } },
+                        { id: 'portuguesa', name: 'Portuguesa', description: 'Molho de tomate, mussarela, presunto, ovos, cebola, orégano', prices: { p: 28, m: 33, g: 38.00 } },
+                        { id: 'salame', name: 'Salame', description: 'Molho de tomate, mussarela, tomate, salame, azeitona', prices: { p: 27, m: 32, g: 37.00 } },
+                        { id: 'toscana', name: 'Toscana', description: 'Molho de tomate, calabresa, mussarela', prices: { p: 26, m: 31, g: 36.00 } },
+                        { id: 'vegetariana', name: 'Vegetariana', description: 'Molho de tomate, mussarela, palmito, azeitona, cebola, tomate', prices: { p: 26, m: 31, g: 36.00 } },
+                        { id: 'vegetariana-3-queijos', name: 'Vegetariana 3 Queijos', description: 'Molho de tomate, mussarela, catupiry, cheddar, parmesão', prices: { p: 30, m: 35, g: 40.00 } },
+                        { id: 'catubresa', name: 'Catubresa', description: 'Calabresa, catupiry, mussarela, cheddar, molho de tomate e orégano', prices: { p: 28, m: 33, g: 38.00 } }
+                    ].map(p => ({ ...p, image: `https://placehold.co/400x400/111111/FBBF24?text=${p.name.replace(/\s/g, '+')}` }))
+                },
+                {
+                    category: "Pizzas Premium",
+                    id: "pizzas_premium",
+                    title: "Pizzas Premium",
+                    items: [
+                        { id: 'pizza-pantano', name: 'Pizza do Pântano', description: 'Mussarela, queijo branco, frango, bancon, peperone, cream cheese, ovos, tomate, cebola, milho, orégano, azeitona, manjericão', prices: { p: 50, m: 55, g: 60.00 } },
+                        { id: 'moda-lamundo', name: 'A Moda Lamundo dos Sabores', description: 'Mussarela, molho lombo, cream cheese, milho, barbecue, orégano, bacon', prices: { p: 43, m: 48, g: 53.00 } },
+                        { id: 'bacon-4-queijos', name: 'Bacon 4 Queijos', description: 'Molho, mussarela, bacon, cheddar, catupiry, parmesão, orégano', prices: { p: 35, m: 40, g: 45.00 } },
+                        { id: 'super-portuguesa', name: 'Super Portuguesa', description: 'Mussarela, molho, presunto, milho, ovo, tomate, cebola, pimentão, catupiry, bacon, orégano', prices: { p: 45, m: 50, g: 55.00 } },
+                        { id: 'calabresa-cheese', name: 'Calabresa Cheese', description: 'Mussarela, molho, cebola, cream cheese', prices: { p: 30, m: 35, g: 40.00 } },
+                        { id: 'tropical-5-queijos', name: 'Tropical – 5 Queijos', description: 'Mussarela, molho, cheddar, catupiry, cream cheese, parmesão', prices: { p: 33, m: 38, g: 43.00 } },
+                        { id: 'camarao-cheese', name: 'Camarão Cheese', description: 'Molho de tomate, orégano, camarão, mussarela, cream cheese', prices: { p: 50, m: 55, g: 60.00 } },
+                        { id: 'reino-frango', name: 'O Reino de Frango', description: 'Mussarela, molho, frango desfiado, cebolinha verde, cream cheese, orégano', prices: { p: 34, m: 39, g: 44.00 } },
+                        { id: 'frango-4-queijos', name: 'Frango 4 Queijos', description: 'Mussarela, molho, frango desfiado, catupiry, queijo parmesão, cheddar, orégano', prices: { p: 32, m: 37, g: 42.00 } },
+                        { id: 'super-fritas', name: 'Super Fritas', description: 'Mussarela, molho, batata frita', prices: { p: 35, m: 40, g: 45.00 } },
+                        { id: 'camarao', name: 'Camarão', description: 'Molho de tomate, mussarela, orégano, camarão', prices: { p: 45, m: 50, g: 55.00 } },
+                        { id: 'neves-mundo', name: 'Do Neves para o Mundo', description: 'Molho de tomate, mussarela, calabresa, cream cheese, tomate, cebola, ovo, barbecue, orégano', prices: { p: 40, m: 45, g: 50.00 } },
+                        { id: 'primavera', name: 'Primavera', description: 'Mussarela, palmito, milho, ervilha, batata palha, orégano', prices: { p: 28, m: 33, g: 38.00 } },
+                        { id: 'frango-bacon-cheddar', name: 'Frango Bacon c/ Cheddar', description: 'Mussarela, molho, frango desfiado, bacon, cheddar, orégano', prices: { p: 33, m: 38, g: 43.00 } },
+                        { id: 'churrasco-gratinado', name: 'Churrasco Gratinado', description: 'Mussarela, calabresa, cream cheese, molho, barbecue, cebolinha verde, cebola, azeitona, orégano', prices: { p: 40, m: 45, g: 50.00 } },
+                        { id: 'super-frango', name: 'Super Frango', description: 'Mussarela, frango desfiado, bacon, ovo, milho, cheddar, catupiry, orégano', prices: { p: 34, m: 39, g: 44.00 } },
+                        { id: 'filadelfia', name: 'Filadélfia', description: 'Mussarela, ovo, frango, barbecue, tomate, molho, cebola', prices: { p: 34, m: 39, g: 44.00 } },
+                        { id: 'nordestina', name: 'Nordestina', description: 'Mussarela, molho, charque, catupiry, cheddar, milho, ervilha, cebola, tomate', prices: { p: 35, m: 40, g: 45.00 } }
+                    ].map(p => ({ ...p, image: `https://placehold.co/400x400/111111/FBBF24?text=${p.name.replace(/\s/g, '+')}` }))
+                },
+                {
+                    category: "Pizzas Doces",
+                    id: "pizzas_doces",
+                    title: "Pizzas Doces",
+                    items: [
+                        { id: 'prestigio', name: 'Prestígio', description: 'Chocolate, coco ralado', prices: { p: 26, m: 31, g: 36.00 } },
+                        { id: 'morango-chocolate', name: 'Morango com Chocolate', description: 'Chocolate, morango, leite condensado', prices: { p: 30, m: 35, g: 40.00 } },
+                        { id: 'romeu-julieta', name: 'Romeu e Julieta', description: 'Queijo mussarela, goiabada', prices: { p: 26, m: 31, g: 36.00 } },
+                        { id: 'brigadeiro', name: 'Brigadeiro', description: 'Chocolate, granulado', prices: { p: 26, m: 31, g: 36.00 } },
+                        { id: 'cartola', name: 'Cartola', description: 'Leite condensado, banana, canela, açúcar', prices: { p: 26, m: 31, g: 36.00 } },
+                        { id: 'banana-nevada', name: 'Banana Nevada', description: 'Creme de leite, banana, chocolate branco, canela, açúcar', prices: { p: 40, m: 45, g: 50.00 } },
+                        { id: 'kit-kat', name: 'Kit Kat', description: 'Creme de leite, chocolate, kit kat', prices: { p: 35, m: 40, g: 45.00 } },
+                        { id: 'm-m', name: 'M&M', description: 'Creme de leite, chocolate, M&M', prices: { p: 28, m: 33, g: 38.00 } },
+                        { id: 'chocobom', name: 'Chocobom', description: 'Creme de leite, chocolate, bombom', prices: { p: 35, m: 40, g: 45.00 } },
+                        { id: 'oreo', name: 'Óreo', description: 'Creme de leite, chocolate branco, mini óreo', prices: { p: 35, m: 40, g: 45.00 } },
+                        { id: 'contemplacao', name: 'Contemplação', description: 'Creme de leite, chocolate, morango, banana, coco ralado, leite condensado', prices: { p: 35, m: 40, g: 45.00 } },
+                        { id: 'formigueiro-branco', name: 'Formigueiro em Chocolate Branco', description: 'Creme de leite, chocolate branco, brigadeiro', prices: { p: 35, m: 40, g: 45.00 } },
+                        { id: 'pizza-sorvete', name: 'Pizza Sorvete', description: 'Creme de leite, chocolate, sorvete', prices: { p: 35, m: 40, g: 45.00 } }
+                    ].map(p => ({ ...p, image: `https://placehold.co/400x400/111111/FBBF24?text=${p.name.replace(/\s/g, '+')}` }))
+                },
+                {
+                    category: "Hambúrgueres", id: "hamburgueres", title: "Hambúrgueres",
+                    items: [
+                        { id: 'classic-burger', name: 'Classic Burger', price: 13.99, description: 'Carne artesanal, queijo cheddar, alface, tomate, cebola e molho especial' },
+                        { id: 'bacon-burger', name: 'Bacon Burger', price: 17.00, description: 'Carne artesanal, bacon crocante, queijo cheddar, cebola, tomate, alface, molhos da casa' },
+                        { id: 'smash-duplo', name: 'Smash Duplo', price: 20.00, description: '2 carnes artesanais, salada, milho, ervilha, queijo mussarela, molhos da casa' },
+                        { id: 'mexicano', name: 'Mexicano', price: 19.00, description: 'Carne artesanal, salada, bacon, cheddar, ovo, batata palha, molhos da casa' },
+                        { id: 'churrasco-bresa', name: 'Churrasco Bresa', price: 19.00, description: 'Carne artesanal, ovo, calabresa, batata palha, molhos da casa' },
+                        { id: 'salsichao-burger', name: 'Salsichão Burger', price: 14.00, description: 'Carne artesanal, salsicha, ovo, salada, molhos da casa' },
+                        { id: 'triplo-cheff', name: 'Triplo do Cheff', price: 33.00, description: '3 carnes artesanais, bacon, ovo, salada, molhos da casa' },
+                        { id: 'burger-cheff', name: 'Burger Cheff', price: 8.00, description: 'Pão especial, carne, tomate, cebola, alface, fusão de queijo (mussarela e cheddar), molho especial' },
+                        { id: 'burger-nordestino', name: 'Burger Nordestino', price: 15.99, description: 'Pão especial, hambúrguer bovino, queijo coalho, tomate, alface, queijo, cebola, calabresa ao ponto, ovo, molho especial' },
+                        { id: 'dracula-bacon', name: 'Drácula Bacon', price: 12.99, description: 'Pão especial, hambúrguer, queijo cheddar, mussarela, cebola caramelizada, ovo, bacon crocante, molho especial' },
+                        { id: 'goodzila-bresa', name: 'Goodzila Bresa', price: 12.99, description: 'Pão especial, hambúrguer bovino, ovo, calabresa, fusão de dois queijos, cebola caramelizada ou crua, salada, molho especial' },
+                        { id: 'rei-cheddar', name: 'Rei Cheddar', price: 12.00, description: 'Pão especial, hambúrguer bovino, cheddar derretido, bacon crocante, frango desfiado, cebola caramelizada' },
+                        { id: 'king-kong', name: 'King – Kong', price: 16.00, description: 'Pão especial, 2 carnes, 2 camadas de queijo cheddar e mussarela, presunto, alface, tomate, cebola, molho especial' },
+                        { id: 'monster-king-x-tudo', name: 'Monster King X – Tudo', price: 16.00, description: 'Pão especial, hambúrguer, salada, bacon, presunto, ovo, calabresa, frango desfiado, molho especial' },
+                        { id: 'amistoso-palha', name: 'Amistoso Palha', price: 12.00, description: 'Pão especial, hambúrguer, presunto, fusão de queijos (mussarela + cheddar), batata palha, molho especial' },
+                        { id: 'hamburgão-irado', name: 'Hamburgão Irado', price: 30.00, description: '3 Carnes, 3 Ovos, Presunto, Calabresa, Queijo, Salada, Batata frita, cheddar e molho especial' },
+                        { id: 'mega-hamburgão', name: 'Mega Hamburgão', price: 65.00, description: '6 Carnes, 6 Ovos, Presunto, Calabresa, Queijo, Salada, Batata frita, cheddar e molho especial' }
+                    ].map(p => ({ ...p, image: `https://placehold.co/400x400/111111/FBBF24?text=${p.name.replace(/\s/g, '+')}` }))
+                },
+                {
+                    category: "Pastéis", id: "pasteis", title: "Pastéis",
+                    items: [
+                        { id: 'pastel-frango-catupiry', name: 'Frango Catupiry', price: 6.00, description: 'Pastel de frango com catupiry' },
+                        { id: 'pastel-frango-cheddar', name: 'Frango Cheddar', price: 6.00, description: 'Pastel de frango com cheddar' },
+                        { id: 'pastel-calabresa', name: 'Calabresa', price: 6.00, description: 'Pastel de calabresa' },
+                        { id: 'pastel-presunto', name: 'Presunto', price: 6.00, description: 'Pastel de presunto' },
+                        { id: 'pastel-mussarela', name: 'Mussarela', price: 6.00, description: 'Pastel de mussarela' },
+                        { id: 'pastel-misto', name: 'Misto', price: 6.00, description: 'Presunto e mussarela' },
+                        { id: 'pastel-queijo-branco', name: 'Queijo branco', price: 6.00, description: 'Pastel de quijo qualho' },
+                        { id: 'pastel-camarao-cream-cheese', name: 'Camarão + Cream Cheese', price: 13.00, description: 'Pastel de camarão com cream cheese' },
+                        { id: 'pastel-camarao-cheddar', name: 'Camarão + Cheddar', price: 10.00, description: 'Pastel de camarão com cheddar' },
+                        { id: 'pastel-camarao-mussarela', name: 'Camarão + mussarela', price: 10.00, description: 'Pastel de camarão com mussarela' },
+                        { id: 'pastel-bacon-mussarela', name: 'Bacon + mussarela', price: 8.00, description: 'Pastel de bacon com mussarela' },
+                        { id: 'pastel-charque-cream-cheese', name: 'Charque + Cream Cheese', price: 10.00, description: 'Pastel de charque com cream cheese' },
+                        { id: 'pastel-calabres', name: 'Calabrês', price: 10.00, description: 'Pastel de calabresa, queijo e molho de tomate' },
+                        { id: 'pastel-catubres', name: 'Catubrês', price: 8.00, description: 'Pastel de calabresa, mussarela e catupiry' },
+                        { id: 'pastel-franrei', name: 'Franrei', price: 10.00, description: 'Pastel de frango com requeijão' },
+                        { id: 'pastel-frango-cream-cheese', name: 'Frango + Cream Cheese', price: 10.00, description: 'Pastel de frango com cream cheese' },
+                        { id: 'pastel-frango-mussarela', name: 'Frango + Mussarela', price: 6.00, description: 'Pastel de frango com mussarela' },
+                        { id: 'pastel-4-sabores', name: '4 Sabores', price: 10.00, description: 'Escreva na Observação os 4 sabores' }
+                    ].map(p => ({ ...p, image: `https://placehold.co/400x400/111111/FBBF24?text=${p.name.replace(/\s/g, '+')}` }))
+                },
+                {
+                    category: "Esfirras", id: "esfirras", title: "Esfirras",
+                    items: [
+                        { id: 'esfirra-frango-catupiry', name: 'Frango c/ Catupiry', price: 4.00, description: 'Esfirra de frango com catupiry' },
+                        { id: 'esfirra-mussarela', name: 'Mussarela', price: 4.00, description: 'Esfirra recheada com mussarela' },
+                        { id: 'esfirra-queijo-branco', name: 'Queijo branco', price: 4.00, description: 'Esfirra com queijo branco' },
+                        { id: 'esfirra-bacon', name: 'Bacon', price: 6.00, description: 'Esfirra recheada com bacon' },
+                        { id: 'esfirra-frango-mussarela', name: 'Frango c/ Mussarela', price: 4.00, description: 'Esfirra de frango com mussarela' },
+                        { id: 'esfirra-calabresa', name: 'Calabresa', price: 4.00, description: 'Esfirra de calabresa' },
+                        { id: 'esfirra-toscana', name: 'Toscana', price: 4.00, description: 'Esfirra de linguiça toscana' },
+                        { id: 'esfirra-dois-queijos', name: 'Dois Queijos', price: 4.00, description: 'Esfirra de mussarela e catupiry' },
+                        { id: 'esfirra-frango-cheddar', name: 'Frango c/ Cheddar', price: 4.00, description: 'Esfirra de frango com cheddar' },
+                        { id: 'esfirra-palmito-mussarela', name: 'Palmito c/ Mussarela', price: 5.00, description: 'Esfirra de palmito com mussarela' },
+                        { id: 'esfirra-charque-mussarela', name: 'Charque c/ Mussarela', price: 6.00, description: 'Esfirra de charque com mussarela' },
+                        { id: 'esfirra-charque-cream-cheese', name: 'Charque c/ cream cheese', price: 7.00, description: 'Esfirra de charque com cream cheese' },
+                        { id: 'esfirra-camarao-mussarela', name: 'Camarão c/ Mussarela', price: 8.00, description: 'Esfirra de camarão com mussarela' },
+                        { id: 'esfirra-camarao-cream-cheese', name: 'Camarão c/ cream cheese', price: 10.00, description: 'Esfirra de camarão com cream cheese' },
+                        { id: 'esfirra-atum-mussarela', name: 'Atum c/ mussarela', price: 10.00, description: 'Esfirra de atum com mussarela' },
+                        { id: 'esfirra-brigadeiro', name: 'Brigadeiro', price: 6.00, description: 'Esfirra de brigadeiro' },
+                        { id: 'esfirra-prestigio', name: 'Prestígio', price: 6.00, description: 'Esfirra de prestígio' },
+                        { id: 'esfirra-morango-chocolate', name: 'Morango c/ chocolate', price: 6.00, description: 'Esfirra de morango com chocolate' },
+                        { id: 'esfirra-banana-chocolate', name: 'Banana c/ chocolate', price: 6.00, description: 'Esfirra de banana com chocolate' },
+                        { id: 'esfirra-mm-chocolate', name: 'MM c/ chocolate', price: 6.00, description: 'Esfirra de MM com chocolate' }
+                    ].map(p => ({ ...p, image: `https://placehold.co/400x400/111111/FBBF24?text=${p.name.replace(/\s/g, '+')}` }))
+                },
+                {
+                    category: "Batatas Fritas", id: "batatas_fritas", title: "Batatas Fritas",
+                    items: [
+                        { id: 'batata-p', name: 'Batata Frita P', price: 7.00, description: 'Porção de batata frita crocante + cheddar + Quijo ralado' },
+                        { id: 'batata-g', name: 'Batata Frita G', price: 15.00, description: 'Porção de batata frita crocante + cheddar + Queijo Ralado ' },
+                        { id: 'batata-especial', name: 'Batata Especial', price: 20.00, description: 'Porção de batata frita crocante + cheddar Premium derretido+ Bacon Crocante' },
+                        { id: 'batata-calabresa', name: 'Batata Calabresa', price: 20.00, description: 'Porção de batata frita crocante + cheddar Premium derretido+ Calabresa' },
+                        { id: 'batata-calabresa-acebolada', name: 'Batata Calabresa Acebolada', price: 25.00, description: 'Porção de batata frita crocante + cheddar Premium derretido+ Calabresa Acebolada' }
+                    ].map(p => ({ ...p, image: `https://placehold.co/400x400/111111/FBBF24?text=${p.name.replace(/\s/g, '+')}` }))
+                },
+                {
+                    category: "Açaí", id: "acai", title: "Açaí",
+                    items: [
+                        { id: 'acai-500', name: 'Açaí 500ml', price: 23.00, description: 'Mm brigadeiro leite condensado leite pó granola frutas banana ou morango' },
+                        { id: 'acai-300', name: 'Açaí 300ml', price: 18.00, description: 'Mm brigadeiro leite condensado leite pó granola frutas banana ou morango' },
+                        { id: 'acai-supremo', name: 'Açaí Supremo', price: 35.00, description: 'Mm brigadeiro leite condensado leite pó granola frutas banana ou morango jujubas chocola' }
+                    ].map(p => ({ ...p, image: `https://placehold.co/400x400/111111/FBBF24?text=${p.name.replace(/\s/g, '+')}` }))
+                },
+                {
+                    category: "Promoção", id: "promocao", title: "Promoção",
+                    items: [
+                        { id: "promo-pizza", name: "Pizza do Dia + Refri", description: "1 Pizza Média de Calabresa + 1 Refrigerante 1L.", image: "https://placehold.co/400x400/111111/FBBF24?text=Promo+Pizza", price: 49.90 },
+                        { id: "promo-burger", name: "Compre 1 Leve 2", description: "Compre um Hambúrguer Artesanal e leve um Especial da Casa.", image: "https://placehold.co/400x400/111111/FBBF24?text=Promo+Burger", price: 20.00 }
+                    ]
+                },
+                {
+                    category: "Bebidas", id: "bebidas", title: "Bebidas",
+                    items: [
+                        { id: 'refri-lata-coca', name: 'Refrigerante Lata Coca', price: 6.00, description: 'Lata 350ml' },
+                        { id: 'refri-lata-fanta', name: 'Refrigerante Lata Fanta', price: 6.00, description: 'Lata 350ml' },
+                        { id: 'refri-1l', name: 'Refrigerante 1LT', price: 9.00, description: 'Guaraná ou Coca-Cola' },
+                        { id: 'refri-2l-guarana-fanta', name: 'Refrigerante 2LT', price: 13.00, description: 'Guaraná ou Fanta' },
+                        { id: 'refri-2l-coca', name: 'Refrigerante 2LT Coca', price: 15.00, description: 'Coca-Cola' },
+                        { id: 'refri-2l-jatoba', name: 'Refrigerante 2LT Jatobá', price: 10.00, description: 'Jatobá' }
+                    ].map(p => ({ ...p, image: `https://placehold.co/400x400/111111/FBBF24?text=${p.name.replace(/\s/g, '+')}` }))
                 }
-            });
+            ];
 
-            installBtn.addEventListener('click', (e) => {
-                installBtn.classList.add('hidden');
-                if (deferredPrompt) {
-                    deferredPrompt.prompt();
-                    deferredPrompt.userChoice.then((choiceResult) => {
-                        deferredPrompt = null;
-                    });
-                }
-            });
+            const bordaOptions = [
+                { name: "Sem borda", price: 0.00 },
+                { name: "Catupiry", price: 3.00 },
+                { name: "Cheddar", price: 3.00 },
+                { name: "Pãozinho misto", price: 9.00 },
+                { name: "Pãozinho Frango + Mussarela", price: 12.00 },
+                { name: "Camarão", price: 9.00 },
+                { name: "Chocolate", price: 7.00 },
+                { name: "Cream cheese", price: 16.00 }
+            ];
 
-            // --- Lógica do Cardápio ---
+
+            // =================================================================
+            //  2. INICIALIZAÇÃO E ELEMENTOS DO DOM
+            // =================================================================
             let orderItems = [];
             let deliveryFee = 0;
+            let currentPizzaForModal = null;
 
             const menuPage = document.getElementById('menu-page');
             const orderPage = document.getElementById('order-page');
@@ -788,8 +771,8 @@
             const deliveryFeeEl = document.getElementById('delivery-fee');
             const totalPriceEl = document.getElementById('total-price');
             const deliveryOption = document.getElementById('delivery-option');
-            const sitioSelection = document.getElementById('sitio-selection');
-            const sitioList = document.getElementById('sitio-list');
+            const garanhunsSelection = document.getElementById('garanhuns-selection');
+            const bairroList = document.getElementById('bairro-list');
             const confirmationModal = document.getElementById('confirmation-modal');
             const closeModalBtn = document.getElementById('close-modal-btn');
             const bottomNavMenuBtn = document.getElementById('bottom-nav-menu');
@@ -798,72 +781,52 @@
             const bottomNavInfoBtn = document.getElementById('bottom-nav-info');
             const backToMenuBtn = document.getElementById('back-to-menu-btn');
             const categoryModal = document.getElementById('category-modal');
-            const categoryModalContent = document.getElementById('category-modal-content');
             const closeCategoryModalBtn = document.getElementById('close-category-modal');
-            const modalCategoryLinks = document.querySelectorAll('.modal-category-link');
-            const sections = document.querySelectorAll('#menu-items > div');
-            const navLinks = document.querySelectorAll('#category-nav a');
             const closeOrderPageBtn = document.getElementById('close-order-page-btn');
 
-            window.showPage = function (pageId) {
-                const newPage = document.getElementById(pageId);
-                if (currentPage === newPage) return;
+            // Elementos do Modal de Pizza
+            const pizzaOptionsModal = document.getElementById('pizza-options-modal');
+            const closePizzaModalBtn = document.getElementById('close-pizza-modal-btn');
+            const modalPizzaImg = document.getElementById('modal-pizza-img');
+            const modalPizzaName = document.getElementById('modal-pizza-name');
+            const modalPizzaSizes = document.getElementById('modal-pizza-sizes');
+            const modalPizzaType = document.getElementById('modal-pizza-type');
+            const secondFlavorContainer = document.getElementById('second-flavor-container');
+            const secondFlavorSelect = document.getElementById('second-flavor-select');
+            const modalPizzaPrice = document.getElementById('modal-pizza-price');
+            const confirmAddPizzaBtn = document.getElementById('confirm-add-pizza-btn');
 
-                currentPage.style.opacity = '0';
+            // =================================================================
+            //  3. FUNÇÕES PRINCIPAIS E LÓGICA DO NEGÓCIO
+            // =================================================================
 
-                setTimeout(() => {
-                    currentPage.classList.add('hidden');
+            function getAllPizzas() { return menuData.filter(category => category.id.startsWith('pizzas_')).flatMap(category => category.items); }
+            function formatCurrency(value) { return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }); }
 
-                    newPage.classList.remove('hidden');
-                    void newPage.offsetWidth;
-                    newPage.style.opacity = '1';
-
-                    currentPage = newPage;
-
-                    const pageName = pageId.split('-')[0];
-                    updateBottomNavActiveState(pageName);
-                    window.scrollTo(0, 0);
-                }, 400);
-            }
-
-            function formatCurrency(value) {
-                return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-            }
-
-            window.addToOrder = function (itemName, itemPrice) {
-                const existingItem = orderItems.find(item => item.name === itemName);
-                if (existingItem) {
-                    existingItem.quantity++;
-                } else {
-                    orderItems.push({ name: itemName, price: itemPrice, quantity: 1 });
-                }
+            function addSimpleItemToOrder(item) {
+                const existingItem = orderItems.find(orderItem => orderItem.name === item.name);
+                if (existingItem) { existingItem.quantity++; }
+                else { orderItems.push({ name: item.name, price: item.price, quantity: 1, id: Date.now() }); }
                 updateCart();
-                showToast(`${itemName} adicionado!`);
+                showToast(`${item.name} adicionado!`);
             }
 
-            window.removeFromOrder = function (itemName) {
-                const itemIndex = orderItems.findIndex(item => item.name === itemName);
+            window.removeFromOrder = function (itemId) {
+                const itemIndex = orderItems.findIndex(item => item.id === itemId);
                 if (itemIndex > -1) {
-                    if (orderItems[itemIndex].quantity > 1) {
-                        orderItems[itemIndex].quantity--;
-                    } else {
-                        orderItems.splice(itemIndex, 1);
-                    }
+                    if (orderItems[itemIndex].quantity > 1) { orderItems[itemIndex].quantity--; }
+                    else { orderItems.splice(itemIndex, 1); }
                 }
                 updateCart();
             }
 
             function updateCart() {
-                updateCartCount();
-                updateOrderView();
-            }
-
-            function updateCartCount() {
                 const totalItems = orderItems.reduce((sum, item) => sum + item.quantity, 0);
                 headerCartCount.textContent = totalItems;
                 bottomCartCount.textContent = totalItems;
                 headerCartCount.style.display = totalItems > 0 ? 'flex' : 'none';
                 bottomCartCount.style.display = totalItems > 0 ? 'flex' : 'none';
+                updateOrderView();
             }
 
             function updateOrderView() {
@@ -872,14 +835,8 @@
                 } else {
                     orderItemsList.innerHTML = orderItems.map(item => `
                     <div class="flex justify-between items-center bg-gray-800 p-3 rounded-lg">
-                        <div>
-                            <p class="font-semibold">${item.name}</p>
-                            <p class="text-sm text-gray-400">${formatCurrency(item.price)}</p>
-                        </div>
-                        <div class="flex items-center gap-3">
-                             <span class="font-bold">${item.quantity}x</span>
-                             <button onclick="removeFromOrder('${item.name}')" class="text-red-500 hover:text-red-400 text-lg"><i class="fas fa-trash-alt"></i></button>
-                        </div>
+                        <div><p class="font-semibold">${item.name}</p><p class="text-sm text-gray-400">${formatCurrency(item.price)}</p></div>
+                        <div class="flex items-center gap-3"><span class="font-bold">${item.quantity}x</span><button onclick="removeFromOrder(${item.id})" class="text-red-500 hover:text-red-400 text-lg"><i class="fas fa-trash-alt"></i></button></div>
                     </div>`).join('');
                 }
                 calculateTotal();
@@ -888,15 +845,12 @@
             function calculateTotal() {
                 const subtotal = orderItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
                 const option = deliveryOption.value;
-                if (option === 'vila_neves') {
-                    deliveryFee = 2.00;
-                    sitioSelection.classList.add('hidden');
-                } else if (option === 'sitio') {
-                    sitioSelection.classList.remove('hidden');
-                    deliveryFee = parseFloat(sitioList.value) || 0;
+                if (option === 'garanhuns') {
+                    garanhunsSelection.classList.remove('hidden');
+                    deliveryFee = parseFloat(bairroList.value) || 0;
                 } else {
                     deliveryFee = 0;
-                    sitioSelection.classList.add('hidden');
+                    garanhunsSelection.classList.add('hidden');
                 }
                 const total = subtotal + deliveryFee;
                 subtotalEl.textContent = formatCurrency(subtotal);
@@ -904,71 +858,184 @@
                 totalPriceEl.textContent = formatCurrency(total);
             }
 
-            function generateWhatsAppMessage() {
-                if (orderItems.length === 0) {
-                    alert("Seu carrinho está vazio!");
-                    return;
+            // =================================================================
+            //  4. LÓGICA DO MODAL DE OPÇÕES DE PIZZA
+            // =================================================================
+
+            function openPizzaModal(pizzaId) {
+                const pizzaData = getAllPizzas().find(p => p.id === pizzaId);
+                if (!pizzaData) return;
+                currentPizzaForModal = pizzaData;
+                modalPizzaImg.src = pizzaData.image;
+                modalPizzaName.textContent = pizzaData.name;
+
+                modalPizzaSizes.innerHTML = Object.keys(pizzaData.prices).map(size => `
+                    <div><input type="radio" name="pizza_size" id="size_${size}" value="${size}" class="hidden pizza-option-input" ${size === 'g' ? 'checked' : ''}><label for="size_${size}" class="pizza-option-label">${size.toUpperCase()}</label></div>`).join('');
+
+                document.getElementById('type_inteira').checked = true;
+                secondFlavorContainer.classList.add('hidden');
+
+                const allPizzas = getAllPizzas();
+                secondFlavorSelect.innerHTML = '<option value="">Selecione...</option>' + allPizzas.filter(p => p.id !== pizzaData.id).map(p => `<option value="${p.id}">${p.name}</option>`).join('');
+
+                const bordaSelect = document.getElementById('borda-select');
+                bordaSelect.innerHTML = bordaOptions.map(borda => `
+                    <option value="${borda.name}">${borda.name} (+ ${formatCurrency(borda.price)})</option>
+                `).join('');
+
+                updatePizzaPriceInModal();
+                pizzaOptionsModal.classList.remove('hidden');
+
+                document.querySelectorAll('input[name="pizza_size"], input[name="pizza_type"]').forEach(input => {
+                    input.addEventListener('change', updatePizzaPriceInModal);
+                });
+                secondFlavorSelect.addEventListener('change', updatePizzaPriceInModal);
+                bordaSelect.addEventListener('change', updatePizzaPriceInModal);
+            }
+
+            function updatePizzaPriceInModal() {
+                if (!currentPizzaForModal) return;
+                const selectedSize = document.querySelector('input[name="pizza_size"]:checked').value;
+                const selectedType = document.querySelector('input[name="pizza_type"]:checked').value;
+                const secondFlavorId = secondFlavorSelect.value;
+                const selectedBordaName = document.getElementById('borda-select').value;
+
+                let finalPrice = currentPizzaForModal.prices[selectedSize];
+
+                if (selectedType === 'meio_a_meio') {
+                    secondFlavorContainer.classList.remove('hidden');
+                    if (secondFlavorId) {
+                        const allPizzas = getAllPizzas();
+                        const secondPizza = allPizzas.find(p => p.id === secondFlavorId);
+                        finalPrice = Math.max(finalPrice, secondPizza.prices[selectedSize]);
+                    }
+                } else {
+                    secondFlavorContainer.classList.add('hidden');
                 }
+
+                const selectedBorda = bordaOptions.find(b => b.name === selectedBordaName);
+                if (selectedBorda) { finalPrice += selectedBorda.price; }
+
+                modalPizzaPrice.textContent = formatCurrency(finalPrice);
+            }
+
+            function addConfiguredPizzaToOrder() {
+                const selectedSize = document.querySelector('input[name="pizza_size"]:checked').value;
+                const selectedType = document.querySelector('input[name="pizza_type"]:checked').value;
+                const secondFlavorId = secondFlavorSelect.value;
+                const selectedBordaName = document.getElementById('borda-select').value;
+
+                let itemName = `${currentPizzaForModal.name} (${selectedSize.toUpperCase()})`;
+                let itemPrice = parseFloat(modalPizzaPrice.textContent.replace('R$', '').replace(/\./g, '').replace(',', '.'));
+
+                if (selectedType === 'meio_a_meio') {
+                    if (!secondFlavorId) { alert('Por favor, selecione o segundo sabor da pizza.'); return; }
+                    const allPizzas = getAllPizzas();
+                    const secondPizza = allPizzas.find(p => p.id === secondFlavorId);
+                    itemName = `Meio a Meio: ${currentPizzaForModal.name} / ${secondPizza.name} (${selectedSize.toUpperCase()})`;
+                }
+
+                if (selectedBordaName !== "Sem borda") { itemName += ` / Borda: ${selectedBordaName}`; }
+
+                orderItems.push({ name: itemName, price: itemPrice, quantity: 1, id: Date.now() });
+                updateCart();
+                showToast('Pizza adicionada!');
+                closePizzaModal();
+            }
+
+            function closePizzaModal() { pizzaOptionsModal.classList.add('hidden'); currentPizzaForModal = null; }
+
+            // =================================================================
+            //  5. GERAÇÃO DINÂMICA DO CONTEÚDO
+            // =================================================================
+            function renderMenuItems() {
+                const container = document.getElementById('menu-items-container');
+                container.innerHTML = '';
+                const navContainer = document.getElementById('category-nav-container');
+                navContainer.innerHTML = '';
+                const modalNavContainer = document.getElementById('modal-category-links-container');
+                modalNavContainer.innerHTML = '';
+
+                menuData.forEach(category => {
+                    const sectionHtml = `<div id="${category.id}" class="pt-4 pb-12 mb-12 border-b border-yellow-900/50"><h2 class="text-3xl font-bold mb-6 border-l-4 border-yellow-500 pl-4 category-title">${category.title}</h2><div class="grid grid-cols-2 lg:grid-cols-3 gap-4">${category.items.map(item => createItemCard(item, category.id)).join('')}</div></div>`;
+                    container.innerHTML += sectionHtml;
+                    const navLink = `<a href="#${category.id}" class="category-link text-gray-300 hover:text-yellow-400 px-4 py-2 transition-colors duration-300">${category.title}</a>`;
+                    navContainer.innerHTML += navLink;
+                    const modalNavLink = `<a href="#${category.id}" class="modal-category-link text-lg text-gray-300 hover:text-yellow-500 py-2">${category.title}</a>`;
+                    modalNavContainer.innerHTML += modalNavLink;
+                });
+
+                document.querySelectorAll('.modal-category-link').forEach(link => { link.addEventListener('click', () => toggleCategoryModal(false)); });
+            }
+
+            function createItemCard(item, categoryId) {
+                const isPizza = categoryId.startsWith('pizzas_');
+                const priceDisplay = isPizza ? `A partir de ${formatCurrency(item.prices.p)}` : formatCurrency(item.price);
+                const buttonAction = isPizza ? `openPizzaModal('${item.id}')` : `addSimpleItemToOrder(${JSON.stringify(item)})`;
+
+                return `
+                    <div class="card-bg rounded-lg shadow-lg overflow-hidden flex flex-col group">
+                        <div class="overflow-hidden aspect-square"><img src="${item.image}" alt="${item.name}" class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110"></div>
+                        <div class="p-3 md:p-4 flex flex-col flex-grow">
+                            <h3 class="font-bold text-base md:text-xl mb-1 text-yellow-400">${item.name}</h3>
+                            <p class="text-gray-400 text-xs md:text-sm mb-2 flex-grow">${item.description}</p>
+                            <div class="flex justify-between items-center mt-2">
+                                <span class="font-bold text-md md:text-lg">${priceDisplay}</span>
+                                <button onclick="${buttonAction}" class="bg-yellow-500 text-black px-3 py-1 md:px-4 md:py-2 rounded-lg hover:bg-yellow-600 smooth-transition text-sm md:text-base"><i class="fas fa-plus md:mr-2"></i><span class="hidden md:inline">Adicionar</span></button>
+                            </div>
+                        </div>
+                    </div>`;
+            }
+
+            window.openPizzaModal = openPizzaModal;
+            window.addSimpleItemToOrder = addSimpleItemToOrder;
+
+            // =================================================================
+            //  6. EVENT LISTENERS E INICIALIZAÇÃO GERAL
+            // =================================================================
+            const manifest = { "name": "La Mundo dos Sabores", "short_name": "Sabores", "start_url": window.location.href, "display": "standalone", "background_color": "#000000", "theme_color": "#FBBF24", "description": "Cardápio Digital da La Mundo dos Sabores", "icons": [{ "src": "https://placehold.co/192x192/000000/FBBF24?text=Sabores", "sizes": "192x192", "type": "image/png" }, { "src": "https://placehold.co/512x512/000000/FBBF24?text=Sabores", "sizes": "512x512", "type": "image/png" }] };
+            const manifestString = JSON.stringify(manifest); const manifestBlob = new Blob([manifestString], { type: 'application/json' }); const manifestUrl = URL.createObjectURL(manifestBlob);
+            const link = document.querySelector('link[rel="manifest"]') || document.createElement('link'); link.rel = 'manifest'; link.href = manifestUrl; document.head.appendChild(link);
+            let deferredPrompt; const installBtn = document.getElementById('install-app-btn');
+            if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) { installBtn.classList.add('hidden'); }
+            window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; if (!window.matchMedia('(display-mode: standalone)').matches && !window.navigator.standalone) { installBtn.classList.remove('hidden'); } });
+            installBtn.addEventListener('click', (e) => { installBtn.classList.add('hidden'); if (deferredPrompt) { deferredPrompt.prompt(); deferredPrompt.userChoice.then((choiceResult) => { deferredPrompt = null; }); } });
+
+            window.showPage = function (pageId) {
+                const newPage = document.getElementById(pageId); if (currentPage === newPage) return; currentPage.style.opacity = '0';
+                setTimeout(() => { currentPage.classList.add('hidden'); newPage.classList.remove('hidden'); void newPage.offsetWidth; newPage.style.opacity = '1'; currentPage = newPage; const pageName = pageId.split('-')[0]; updateBottomNavActiveState(pageName); window.scrollTo(0, 0); }, 400);
+            }
+
+            function generateWhatsAppMessage() {
+                if (orderItems.length === 0) { alert("Seu carrinho está vazio!"); return; }
                 const clientName = document.getElementById('client-name').value;
+                const clientWhatsapp = document.getElementById('client-whatsapp').value;
                 const address = document.getElementById('address').value;
                 const deliveryType = deliveryOption.options[deliveryOption.selectedIndex].text;
+                if (!clientName) { alert("Por favor, informe seu nome."); return; }
+                if (!clientWhatsapp) { alert("Por favor, informe seu número do WhatsApp."); return; }
+                if (deliveryOption.value !== 'local' && !address) { alert("Por favor, informe o endereço ou ponto de referência."); return; }
+                if (deliveryOption.value === 'garanhuns' && bairroList.value === '0') { alert("Por favor, selecione o bairro para entrega."); return; }
 
-                if (!clientName) {
-                    alert("Por favor, informe seu nome.");
-                    return;
-                }
-                if (deliveryOption.value !== 'local' && !address) {
-                    alert("Por favor, informe o endereço ou ponto de referência.");
-                    return;
-                }
-                if (deliveryOption.value === 'sitio' && sitioList.value === '0') {
-                    alert("Por favor, selecione o sítio para entrega.");
-                    return;
-                }
-
-                let message = `🍕 *Novo Pedido La Mundo dos Sabores* 🍕\n\n`;
-                message += `👤 *Cliente:* ${clientName}\n`;
-                if (deliveryOption.value !== 'local') {
-                    message += `🏠 *Endereço/Referência:* ${address}\n`;
-                }
-                if (deliveryOption.value === 'sitio') {
-                    message += `📍 *Sítio:* ${sitioList.options[sitioList.selectedIndex].text.split('-')[0].trim()}\n`;
-                }
-                message += `🚚 *Forma de Entrega:* ${deliveryType}\n\n------------------------------------\n\n📋 *Itens do Pedido:*\n`;
-                orderItems.forEach(item => {
-                    message += `   • ${item.quantity}x ${item.name} - ${formatCurrency(item.price * item.quantity)}\n`;
-                });
-                message += `\n------------------------------------\n\n💰 *Subtotal:* ${subtotalEl.textContent}\n🛵 *Taxa de Entrega:* ${deliveryFeeEl.textContent}\n------------------------------------\n*Total do Pedido:* *${totalPriceEl.textContent}*\n------------------------------------\n\nAgradecemos a preferência!`;
+                let message = `PEDIDO FEITO NA LA MUNDO DOS SABORES\n\n------------------------------------\nDADOS DO CLIENTE:\nNome: ${clientName}\nWhatsApp: ${clientWhatsapp}\nForma de Entrega: ${deliveryType}\n`;
+                if (deliveryOption.value !== 'local') { message += `Endereço/Referência: ${address}\n`; }
+                if (deliveryOption.value === 'garanhuns') { message += `Bairro: ${bairroList.options[bairroList.selectedIndex].text.split('-')[0].trim()}\n`; }
+                message += `------------------------------------\n\nRESUMO DO PEDIDO:\n`;
+                orderItems.forEach(item => { message += `${item.quantity}x ${item.name} - ${formatCurrency(item.price * item.quantity)}\n`; });
+                message += `\n------------------------------------\nSubtotal: ${subtotalEl.textContent}\nTaxa de Entrega: ${deliveryFeeEl.textContent}\nTOTAL: ${totalPriceEl.textContent}\n------------------------------------\n\nAgradecemos a preferência!`;
                 return encodeURIComponent(message);
             }
 
             function showToast(message) {
-                const toast = document.createElement('div');
-                toast.className = 'toast-notification';
-                toast.textContent = message;
-                document.body.appendChild(toast);
-                setTimeout(() => {
-                    toast.classList.add('closing');
-                    toast.addEventListener('animationend', () => {
-                        toast.remove();
-                    });
-                }, 2500);
+                const toast = document.createElement('div'); toast.className = 'toast-notification'; toast.textContent = message; document.body.appendChild(toast);
+                setTimeout(() => { toast.classList.add('closing'); toast.addEventListener('animationend', () => { toast.remove(); }); }, 2500);
             }
 
             function toggleCategoryModal(show) {
+                const categoryModalContent = document.getElementById('category-modal-content');
                 if (show) {
-                    categoryModal.classList.remove('hidden');
-                    requestAnimationFrame(() => {
-                        categoryModal.classList.remove('opacity-0');
-                        categoryModalContent.classList.remove('translate-y-full');
-                    });
-                } else {
-                    categoryModal.classList.add('opacity-0');
-                    categoryModalContent.classList.add('translate-y-full');
-                    setTimeout(() => {
-                        categoryModal.classList.add('hidden');
-                    }, 300);
-                }
+                    categoryModal.classList.remove('hidden'); requestAnimationFrame(() => { categoryModal.classList.remove('opacity-0'); categoryModalContent.classList.remove('translate-y-full'); });
+                } else { categoryModal.classList.add('opacity-0'); categoryModalContent.classList.add('translate-y-full'); setTimeout(() => { categoryModal.classList.add('hidden'); }, 300); }
             }
 
             function updateBottomNavActiveState(activeState) {
@@ -982,125 +1049,100 @@
             addMoreBtn.addEventListener('click', () => showPage('menu-page'));
             backToMenuBtn.addEventListener('click', () => showPage('menu-page'));
             closeOrderPageBtn.addEventListener('click', () => showPage('menu-page'));
-
-            cancelOrderBtn.addEventListener('click', () => {
-                if (confirm('Tem certeza que deseja cancelar o pedido e limpar seu carrinho?')) {
-                    orderItems = [];
-                    updateCart();
-                    showPage('menu-page');
-                }
-            });
-
+            cancelOrderBtn.addEventListener('click', () => { if (confirm('Tem certeza que deseja cancelar o pedido e limpar seu carrinho?')) { orderItems = []; updateCart(); showPage('menu-page'); } });
             submitOrderBtn.addEventListener('click', () => {
                 const message = generateWhatsAppMessage();
                 if (message) {
-                    const phoneNumber = '5587999904732';
+                    const phoneNumber = '5587999904732'; // SEU NÚMERO DE WHATSAPP AQUI
                     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
-                    window.open(whatsappUrl, '_blank');
-                    confirmationModal.classList.remove('hidden');
+                    window.open(whatsappUrl, '_blank'); confirmationModal.classList.remove('hidden');
                 }
             });
             deliveryOption.addEventListener('change', calculateTotal);
-            sitioList.addEventListener('change', calculateTotal);
+            bairroList.addEventListener('change', calculateTotal);
             closeModalBtn.addEventListener('click', () => {
-                confirmationModal.classList.add('hidden');
-                orderItems = [];
-                updateCart();
-                document.getElementById('client-name').value = '';
-                document.getElementById('address').value = '';
-                deliveryOption.value = 'local';
-                sitioList.value = '0';
-                calculateTotal();
-                showPage('menu-page');
+                confirmationModal.classList.add('hidden'); orderItems = []; updateCart();
+                document.getElementById('client-name').value = ''; document.getElementById('client-whatsapp').value = '';
+                document.getElementById('address').value = ''; deliveryOption.value = 'local'; bairroList.value = '0';
+                calculateTotal(); showPage('menu-page');
             });
-            bottomNavMenuBtn.addEventListener('click', () => {
-                showPage('menu-page');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            });
-            bottomNavCategoriesBtn.addEventListener('click', () => {
-                toggleCategoryModal(true);
-                updateBottomNavActiveState('categories');
-            });
+            bottomNavMenuBtn.addEventListener('click', () => { showPage('menu-page'); window.scrollTo({ top: 0, behavior: 'smooth' }); });
+            bottomNavCategoriesBtn.addEventListener('click', () => { toggleCategoryModal(true); updateBottomNavActiveState('categories'); });
             bottomNavOrderBtn.addEventListener('click', () => showPage('order-page'));
             bottomNavInfoBtn.addEventListener('click', () => showPage('info-page'));
             closeCategoryModalBtn.addEventListener('click', () => toggleCategoryModal(false));
-            categoryModal.addEventListener('click', (e) => {
-                if (e.target === categoryModal) toggleCategoryModal(false);
-            });
-            modalCategoryLinks.forEach(link => {
-                link.addEventListener('click', () => toggleCategoryModal(false));
-            });
+            categoryModal.addEventListener('click', (e) => { if (e.target === categoryModal) toggleCategoryModal(false); });
+
+            closePizzaModalBtn.addEventListener('click', closePizzaModal);
+            confirmAddPizzaBtn.addEventListener('click', addConfiguredPizzaToOrder);
 
             const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        navLinks.forEach(link => {
-                            link.classList.toggle('active', link.getAttribute('href').substring(1) === entry.target.id);
-                        });
-                    }
-                });
+                entries.forEach(entry => { if (entry.isIntersecting) { document.querySelectorAll('#category-nav a').forEach(link => { link.classList.toggle('active', link.getAttribute('href').substring(1) === entry.target.id); }); } });
             }, { threshold: 0.5 });
-            sections.forEach(section => observer.observe(section));
 
-            // --- Lógica do Banner ---
-            const bannerSlider = document.getElementById('banner-slider');
-            const bannerDotsContainer = document.getElementById('banner-dots');
+            const bannerSlider = document.getElementById('banner-slider'); const bannerDotsContainer = document.getElementById('banner-dots');
             if (bannerSlider && bannerDotsContainer) {
-                const slides = bannerSlider.querySelectorAll('a');
-                let currentSlide = 0;
-                let slideInterval;
-
+                const slides = bannerSlider.querySelectorAll('a'); let currentSlide = 0; let slideInterval;
                 if (slides.length > 0) {
-                    slides.forEach((_, index) => {
-                        const dot = document.createElement('button');
-                        dot.classList.add('w-3', 'h-3', 'rounded-full', 'bg-white', 'bg-opacity-50', 'smooth-transition');
-                        dot.addEventListener('click', () => {
-                            goToSlide(index);
-                            resetInterval();
-                        });
-                        bannerDotsContainer.appendChild(dot);
-                    });
-
+                    slides.forEach((_, index) => { const dot = document.createElement('button'); dot.classList.add('w-3', 'h-3', 'rounded-full', 'bg-white', 'bg-opacity-50', 'smooth-transition'); dot.addEventListener('click', () => { goToSlide(index); resetInterval(); }); bannerDotsContainer.appendChild(dot); });
                     const dots = bannerDotsContainer.querySelectorAll('button');
-
                     function goToSlide(slideIndex) {
                         bannerSlider.style.transform = `translateX(-${slideIndex * 100}%)`;
-                        dots.forEach((dot, index) => {
-                            dot.classList.toggle('bg-yellow-500', index === slideIndex);
-                            dot.classList.toggle('w-5', index === slideIndex);
-                            dot.classList.toggle('bg-white', index !== slideIndex);
-                            dot.classList.toggle('bg-opacity-50', index !== slideIndex);
-                            dot.classList.toggle('w-3', index !== slideIndex);
-                        });
+                        dots.forEach((dot, index) => { dot.classList.toggle('bg-yellow-500', index === slideIndex); dot.classList.toggle('w-5', index === slideIndex); dot.classList.toggle('bg-white', index !== slideIndex); dot.classList.toggle('bg-opacity-50', index !== slideIndex); dot.classList.toggle('w-3', index !== slideIndex); });
                         currentSlide = slideIndex;
                     }
-
-                    function nextSlide() {
-                        currentSlide = (currentSlide + 1) % slides.length;
-                        goToSlide(currentSlide);
-                    }
-
-                    function startInterval() {
-                        slideInterval = setInterval(nextSlide, 5000);
-                    }
-
-                    function resetInterval() {
-                        clearInterval(slideInterval);
-                        startInterval();
-                    }
-
-                    goToSlide(0);
-                    startInterval();
+                    function nextSlide() { currentSlide = (currentSlide + 1) % slides.length; goToSlide(currentSlide); }
+                    function startInterval() { slideInterval = setInterval(nextSlide, 5000); }
+                    function resetInterval() { clearInterval(slideInterval); startInterval(); }
+                    goToSlide(0); startInterval();
                 }
             }
 
-            // Inicialização
+            // --- Lógica de Notificações Aleatórias (Marketing) ---
+            const garanhunsBairros = ["Aluízio Pinto", "Antonio Cordeiro", "Boa Vista", "Bougainville", "Brahma", "Brasília", "Centro", "Cidade das Flores", "Cohab 1", "Cohab 2", "Cohab 3", "Dom Helder Câmara", "Heliópolis", "Magano", "Santo Antonio", "São José", "Viana e Moura"];
+            const randomNames = ["José", "Maria", "Antônio", "Ana", "Francisco", "Beatriz", "Carlos", "Fernanda", "Paulo", "Camila", "Pedro", "Juliana"];
+
+            function showFakeOrderNotification() {
+                const randomBairro = garanhunsBairros[Math.floor(Math.random() * garanhunsBairros.length)];
+                const randomName = randomNames[Math.floor(Math.random() * randomNames.length)];
+
+                const toast = document.createElement('div');
+                toast.className = 'social-proof-toast';
+                toast.innerHTML = `<i class="fas fa-receipt text-yellow-500 mr-3 text-lg"></i> <div><p class="font-bold">Cliente ${randomName} do bairro ${randomBairro}</p><p>acabou de fazer um pedido!</p></div>`;
+
+                const existingToast = document.querySelector('.social-proof-toast');
+                if (existingToast) {
+                    existingToast.remove();
+                }
+
+                document.body.appendChild(toast);
+
+                setTimeout(() => {
+                    toast.classList.add('closing');
+                    toast.addEventListener('animationend', () => {
+                        toast.remove();
+                    });
+                }, 5000); // A notificação some após 5 segundos
+            }
+
+            function startFakeNotifications() {
+                const randomInterval = Math.random() * (180000 - 60000) + 60000; // Intervalo aleatório entre 1 e 3 minutos
+                setTimeout(() => {
+                    showFakeOrderNotification();
+                    startFakeNotifications(); // Chama a si mesma para criar um loop
+                }, randomInterval);
+            }
+
+            renderMenuItems();
             updateCart();
             orderPage.style.opacity = '0';
             infoPage.style.opacity = '0';
+            document.querySelectorAll('#menu-items-container > div').forEach(section => observer.observe(section));
+
+            // Inicia o ciclo de notificações de marketing
+            startFakeNotifications();
         });
     </script>
 </body>
 
 </html>
-"
