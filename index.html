@@ -292,7 +292,7 @@
                             id="total-price">R$ 0,00</span></div>
                 </div>
                 <div class="mt-8 border-t border-gray-700 pt-6">
-                    <h3 class="text-2xl font-semibold mb-4 text-white">Detalhes da Entrega</h3>
+                    <h3 class="text-2xl font-semibold mb-4 text-white">Detalhes do Pedido</h3>
                     <div class="space-y-4">
                         <div>
                             <label for="delivery-option" class="block mb-2 text-sm font-medium text-gray-300">Opção de
@@ -300,70 +300,83 @@
                             <select id="delivery-option"
                                 class="bg-gray-800 border border-gray-600 text-white text-sm rounded-lg focus:ring-yellow-500 focus:border-yellow-500 block w-full p-2.5">
                                 <option value="local">Retirar no Local</option>
-                                <option value="garanhuns">Garanhuns</option>
+                                <option value="garanhuns">Receber em Casa (Garanhuns)</option>
                             </select>
                         </div>
-                        <div id="garanhuns-selection" class="hidden">
-                            <label for="bairro-list" class="block mb-2 text-sm font-medium text-gray-300">Selecione o
-                                Bairro</label>
-                            <select id="bairro-list"
-                                class="bg-gray-800 border border-gray-600 text-white text-sm rounded-lg focus:ring-yellow-500 focus:border-yellow-500 block w-full p-2.5">
-                                <option value="0">Selecione...</option>
-                                <option value="5">Aluízio Pinto - R$ 5,00</option>
-                                <option value="2">Antonio Cordeiro - R$ 2,00</option>
-                                <option value="7">Boa Vista - R$ 7,00</option>
-                                <option value="7">Bougainville - R$ 7,00</option>
-                                <option value="2">Brahma - R$ 2,00</option>
-                                <option value="5">Brasília - R$ 5,00</option>
-                                <option value="7">Centro - R$ 7,00</option>
-                                <option value="7">Cidade das Flores - R$ 7,00</option>
-                                <option value="6">Cohab 1 - R$ 6,00</option>
-                                <option value="8">Cohab 2 (Francisco Figueira) - R$ 8,00</option>
-                                <option value="5">Cohab 3 (José Maria Dourado) - R$ 5,00</option>
-                                <option value="8">Condomínio Alameda da Serra - R$ 8,00</option>
-                                <option value="5">Condomínio Bellevue - R$ 5,00</option>
-                                <option value="7">Condomínio Bosque Helópolis - R$ 7,00</option>
-                                <option value="7">Condomínio Imperio - R$ 7,00</option>
-                                <option value="6">Condomínio Mont Serrat - R$ 6,00</option>
-                                <option value="3">Condomínio Monte Verde - R$ 3,00</option>
-                                <option value="8">Condomínio Morada Nobre - R$ 8,00</option>
-                                <option value="8">Condomínio Portal das Colinas - R$ 8,00</option>
-                                <option value="8">Condomínio Residencial Valle Verde - R$ 8,00</option>
-                                <option value="10">Condomínio Vale Verde - R$ 10,00</option>
-                                <option value="8">Condomínio Vila das Palmeiras - R$ 8,00</option>
-                                <option value="8">Dom Helder Câmara - R$ 8,00</option>
-                                <option value="4">Dom Thiago Postma - R$ 4,00</option>
-                                <option value="8">Francisco Simão Figueira - R$ 8,00</option>
-                                <option value="5">Heliópolis - R$ 5,00</option>
-                                <option value="5">Indiano - R$ 5,00</option>
-                                <option value="5">Jardim Petrópolis - R$ 5,00</option>
-                                <option value="5">José Maria Dourado - R$ 5,00</option>
-                                <option value="5">Lacerdópolis - R$ 5,00</option>
-                                <option value="7">Liberdade - R$ 7,00</option>
-                                <option value="7">Loteamento Jacaranda - R$ 7,00</option>
-                                <option value="7">Magano - R$ 7,00</option>
-                                <option value="8">Manoel Camelo - R$ 8,00</option>
-                                <option value="7">Manoel Xeu - R$ 7,00</option>
-                                <option value="7">Massaranduba - R$ 7,00</option>
-                                <option value="7">Mundaú - R$ 7,00</option>
-                                <option value="7">Parque Fênix - R$ 7,00</option>
-                                <option value="5">Santo Antonio - R$ 5,00</option>
-                                <option value="5">São José - R$ 5,00</option>
-                                <option value="3">São Vicente 3 - R$ 3,00</option>
-                                <option value="5">Severiano de Moraes Filho - R$ 5,00</option>
-                                <option value="6">Sítio Papa Terra - R$ 6,00</option>
-                                <option value="2">Viana e Moura - R$ 2,00</option>
-                                <option value="8">Viana e Moura 3 - R$ 8,00</option>
-                                <option value="8">Vila do Quartel - R$ 8,00</option>
-                            </select>
+
+                        <!-- Campos de Endereço (controlados via JS) -->
+                        <div id="address-fields" class="hidden space-y-4">
+                            <div>
+                                <label for="bairro-list" class="block mb-2 text-sm font-medium text-gray-300">Selecione
+                                    o Bairro</label>
+                                <select id="bairro-list"
+                                    class="bg-gray-800 border border-gray-600 text-white text-sm rounded-lg focus:ring-yellow-500 focus:border-yellow-500 block w-full p-2.5">
+                                    <option value="0">Selecione...</option>
+                                    <option value="5">Aluízio Pinto - R$ 5,00</option>
+                                    <option value="2">Antonio Cordeiro - R$ 2,00</option>
+                                    <option value="7">Boa Vista - R$ 7,00</option>
+                                    <option value="7">Bougainville - R$ 7,00</option>
+                                    <option value="2">Brahma - R$ 2,00</option>
+                                    <option value="5">Brasília - R$ 5,00</option>
+                                    <option value="7">Centro - R$ 7,00</option>
+                                    <option value="7">Cidade das Flores - R$ 7,00</option>
+                                    <option value="6">Cohab 1 - R$ 6,00</option>
+                                    <option value="8">Cohab 2 (Francisco Figueira) - R$ 8,00</option>
+                                    <option value="5">Cohab 3 (José Maria Dourado) - R$ 5,00</option>
+                                    <option value="8">Condomínio Alameda da Serra - R$ 8,00</option>
+                                    <option value="5">Condomínio Bellevue - R$ 5,00</option>
+                                    <option value="7">Condomínio Bosque Helópolis - R$ 7,00</option>
+                                    <option value="7">Condomínio Imperio - R$ 7,00</option>
+                                    <option value="6">Condomínio Mont Serrat - R$ 6,00</option>
+                                    <option value="3">Condomínio Monte Verde - R$ 3,00</option>
+                                    <option value="8">Condomínio Morada Nobre - R$ 8,00</option>
+                                    <option value="8">Condomínio Portal das Colinas - R$ 8,00</option>
+                                    <option value="8">Condomínio Residencial Valle Verde - R$ 8,00</option>
+                                    <option value="10">Condomínio Vale Verde - R$ 10,00</option>
+                                    <option value="8">Condomínio Vila das Palmeiras - R$ 8,00</option>
+                                    <option value="8">Dom Helder Câmara - R$ 8,00</option>
+                                    <option value="4">Dom Thiago Postma - R$ 4,00</option>
+                                    <option value="8">Francisco Simão Figueira - R$ 8,00</option>
+                                    <option value="5">Heliópolis - R$ 5,00</option>
+                                    <option value="5">Indiano - R$ 5,00</option>
+                                    <option value="5">Jardim Petrópolis - R$ 5,00</option>
+                                    <option value="5">José Maria Dourado - R$ 5,00</option>
+                                    <option value="5">Lacerdópolis - R$ 5,00</option>
+                                    <option value="7">Liberdade - R$ 7,00</option>
+                                    <option value="7">Loteamento Jacaranda - R$ 7,00</option>
+                                    <option value="7">Magano - R$ 7,00</option>
+                                    <option value="8">Manoel Camelo - R$ 8,00</option>
+                                    <option value="7">Manoel Xeu - R$ 7,00</option>
+                                    <option value="7">Massaranduba - R$ 7,00</option>
+                                    <option value="7">Mundaú - R$ 7,00</option>
+                                    <option value="7">Parque Fênix - R$ 7,00</option>
+                                    <option value="5">Santo Antonio - R$ 5,00</option>
+                                    <option value="5">São José - R$ 5,00</option>
+                                    <option value="3">São Vicente 3 - R$ 3,00</option>
+                                    <option value="5">Severiano de Moraes Filho - R$ 5,00</option>
+                                    <option value="6">Sítio Papa Terra - R$ 6,00</option>
+                                    <option value="2">Viana e Moura - R$ 2,00</option>
+                                    <option value="8">Viana e Moura 3 - R$ 8,00</option>
+                                    <option value="8">Vila do Quartel - R$ 8,00</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="address" class="block mb-2 text-sm font-medium text-gray-300">Endereço (Rua,
+                                    Av., etc.)</label>
+                                <input type="text" id="address"
+                                    class="bg-gray-800 border border-gray-600 text-white text-sm rounded-lg focus:ring-yellow-500 focus:border-yellow-500 block w-full p-2.5"
+                                    placeholder="Ex: Rua da Saudade">
+                            </div>
+                            <div>
+                                <label for="house-number" class="block mb-2 text-sm font-medium text-gray-300">Número da
+                                    Casa</label>
+                                <input type="text" id="house-number"
+                                    class="bg-gray-800 border border-gray-600 text-white text-sm rounded-lg focus:ring-yellow-500 focus:border-yellow-500 block w-full p-2.5"
+                                    placeholder="Digite o número">
+                            </div>
                         </div>
-                        <div>
-                            <label for="address" class="block mb-2 text-sm font-medium text-gray-300">Local ou Ponto de
-                                Referência</label>
-                            <input type="text" id="address"
-                                class="bg-gray-800 border border-gray-600 text-white text-sm rounded-lg focus:ring-yellow-500 focus:border-yellow-500 block w-full p-2.5"
-                                placeholder="Ex: Rua, Nº, Bairro...">
-                        </div>
+
+                        <!-- Campos do Cliente -->
                         <div>
                             <label for="client-name" class="block mb-2 text-sm font-medium text-gray-300">Seu
                                 Nome</label>
@@ -371,7 +384,7 @@
                                 class="bg-gray-800 border border-gray-600 text-white text-sm rounded-lg focus:ring-yellow-500 focus:border-yellow-500 block w-full p-2.5"
                                 placeholder="Como podemos te chamar?">
                         </div>
-                        <div>
+                        <div id="whatsapp-field-container">
                             <label for="client-whatsapp" class="block mb-2 text-sm font-medium text-gray-300">Seu
                                 WhatsApp</label>
                             <input type="tel" id="client-whatsapp"
@@ -551,6 +564,7 @@
                     category: "Pizzas Clássicas",
                     id: "pizzas_classicas",
                     title: "Pizzas Clássicas",
+                    abbreviation: "PZ",
                     items: [
                         { id: 'a-moda-chefe', name: 'A Moda do Chefe', description: 'Frango desfiado, palmito, ovos, bacon, catupiry', prices: { p: 30, m: 35, g: 40.00 } },
                         { id: 'atum', name: 'Atum', description: 'Atum, mussarela, cebola, orégano', prices: { p: 26, m: 31, g: 36.00 } },
@@ -589,6 +603,7 @@
                     category: "Pizzas Premium",
                     id: "pizzas_premium",
                     title: "Pizzas Premium",
+                    abbreviation: "PZ",
                     items: [
                         { id: 'pizza-pantano', name: 'Pizza do Pântano', description: 'Mussarela, queijo branco, frango, bancon, peperone, cream cheese, ovos, tomate, cebola, milho, orégano, azeitona, manjericão', prices: { p: 50, m: 55, g: 60.00 } },
                         { id: 'moda-lamundo', name: 'A Moda Lamundo dos Sabores', description: 'Mussarela, molho lombo, cream cheese, milho, barbecue, orégano, bacon', prices: { p: 43, m: 48, g: 53.00 } },
@@ -614,6 +629,7 @@
                     category: "Pizzas Doces",
                     id: "pizzas_doces",
                     title: "Pizzas Doces",
+                    abbreviation: "PZ",
                     items: [
                         { id: 'prestigio', name: 'Prestígio', description: 'Chocolate, coco ralado', prices: { p: 26, m: 31, g: 36.00 } },
                         { id: 'morango-chocolate', name: 'Morango com Chocolate', description: 'Chocolate, morango, leite condensado', prices: { p: 30, m: 35, g: 40.00 } },
@@ -631,7 +647,7 @@
                     ].map(p => ({ ...p, image: 'imagens/pizza_doces.png' }))
                 },
                 {
-                    category: "Hambúrgueres", id: "hamburgueres", title: "Hambúrgueres",
+                    category: "Hambúrgueres", id: "hamburgueres", title: "Hambúrgueres", abbreviation: "HB",
                     items: [
                         { id: 'classic-burger', name: 'Classic Burger', price: 13.99, description: 'Carne artesanal, queijo cheddar, alface, tomate, cebola e molho especial' },
                         { id: 'bacon-burger', name: 'Bacon Burger', price: 17.00, description: 'Carne artesanal, bacon crocante, queijo cheddar, cebola, tomate, alface, molhos da casa' },
@@ -653,7 +669,7 @@
                     ].map(p => ({ ...p, image: 'imagens/hamburgurer.png' }))
                 },
                 {
-                    category: "Pastéis", id: "pasteis", title: "Pastéis",
+                    category: "Pastéis", id: "pasteis", title: "Pastéis", abbreviation: "PS",
                     items: [
                         { id: 'pastel-frango-catupiry', name: 'Frango Catupiry', price: 6.00, description: 'Pastel de frango com catupiry' },
                         { id: 'pastel-frango-cheddar', name: 'Frango Cheddar', price: 6.00, description: 'Pastel de frango com cheddar' },
@@ -676,7 +692,7 @@
                     ].map(p => ({ ...p, image: 'imagens/pasteis.png' }))
                 },
                 {
-                    category: "Esfirras", id: "esfirras", title: "Esfirras",
+                    category: "Esfirras", id: "esfirras", title: "Esfirras", abbreviation: "ES",
                     items: [
                         { id: 'esfirra-frango-catupiry', name: 'Frango c/ Catupiry', price: 4.00, description: 'Esfirra de frango com catupiry' },
                         { id: 'esfirra-mussarela', name: 'Mussarela', price: 4.00, description: 'Esfirra recheada com mussarela' },
@@ -701,7 +717,7 @@
                     ].map(p => ({ ...p, image: 'imagens/esfirras.png' }))
                 },
                 {
-                    category: "Batatas Fritas", id: "batatas_fritas", title: "Batatas Fritas",
+                    category: "Batatas Fritas", id: "batatas_fritas", title: "Batatas Fritas", abbreviation: "BT",
                     items: [
                         { id: 'batata-p', name: 'Batata Frita P', price: 7.00, description: 'Porção de batata frita crocante + cheddar + Quijo ralado' },
                         { id: 'batata-g', name: 'Batata Frita G', price: 15.00, description: 'Porção de batata frita crocante + cheddar + Queijo Ralado ' },
@@ -711,7 +727,7 @@
                     ].map(p => ({ ...p, image: 'imagens/batata.png' }))
                 },
                 {
-                    category: "Açaí", id: "acai", title: "Açaí",
+                    category: "Açaí", id: "acai", title: "Açaí", abbreviation: "AC",
                     items: [
                         { id: 'acai-500', name: 'Açaí 500ml', price: 23.00, description: 'Mm brigadeiro leite condensado leite pó granola frutas banana ou morango' },
                         { id: 'acai-300', name: 'Açaí 300ml', price: 18.00, description: 'Mm brigadeiro leite condensado leite pó granola frutas banana ou morango' },
@@ -719,14 +735,14 @@
                     ].map(p => ({ ...p, image: 'imagens/acai.png' }))
                 },
                 {
-                    category: "Promoção", id: "promocao", title: "Promoção",
+                    category: "Promoção", id: "promocao", title: "Promoção", abbreviation: "PR",
                     items: [
                         { id: "promo-pizza", name: "Combo Queridinho", description: "Pizza calabresa e metade frango catupiry + Refri 1l.", image: "imagens/WhatsApp Image 2025-09-17 at 11.48.33.jpeg", price: 45.00 },
                         { id: "promo-burger", name: "Super Combo", description: "1 pizza Calabresa G + 1 pizza 4 Queijos G + 1 Guaraná 1l", image: "imagens/WhatsApp Image 2025-09-17 at 12.59.05.jpeg", price: 87.00 }
                     ]
                 },
                 {
-                    category: "Bebidas", id: "bebidas", title: "Bebidas",
+                    category: "Bebidas", id: "bebidas", title: "Bebidas", abbreviation: "BB",
                     items: [
                         { id: 'refri-lata-coca', name: 'Refrigerante Lata Coca', price: 6.00, description: 'Lata 350ml' },
                         { id: 'refri-lata-fanta', name: 'Refrigerante Lata Fanta', price: 6.00, description: 'Lata 350ml' },
@@ -773,7 +789,6 @@
             const deliveryFeeEl = document.getElementById('delivery-fee');
             const totalPriceEl = document.getElementById('total-price');
             const deliveryOption = document.getElementById('delivery-option');
-            const garanhunsSelection = document.getElementById('garanhuns-selection');
             const bairroList = document.getElementById('bairro-list');
             const confirmationModal = document.getElementById('confirmation-modal');
             const closeModalBtn = document.getElementById('close-modal-btn');
@@ -785,6 +800,8 @@
             const categoryModal = document.getElementById('category-modal');
             const closeCategoryModalBtn = document.getElementById('close-category-modal');
             const closeOrderPageBtn = document.getElementById('close-order-page-btn');
+            const addressFields = document.getElementById('address-fields');
+            const whatsappFieldContainer = document.getElementById('whatsapp-field-container');
 
             // Elementos do Modal de Pizza
             const pizzaOptionsModal = document.getElementById('pizza-options-modal');
@@ -805,13 +822,17 @@
             function getAllPizzas() { return menuData.filter(category => category.id.startsWith('pizzas_')).flatMap(category => category.items); }
             function formatCurrency(value) { return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }); }
 
-            function addSimpleItemToOrder(item) {
+            function addSimpleItemToOrder(item, abbreviation) {
                 const existingItem = orderItems.find(orderItem => orderItem.name === item.name);
-                if (existingItem) { existingItem.quantity++; }
-                else { orderItems.push({ name: item.name, price: item.price, quantity: 1, id: Date.now() }); }
+                if (existingItem) {
+                    existingItem.quantity++;
+                } else {
+                    orderItems.push({ name: item.name, price: item.price, quantity: 1, id: Date.now(), abbreviation: abbreviation });
+                }
                 updateCart();
                 showToast(`${item.name} adicionado!`);
             }
+
 
             window.removeFromOrder = function (itemId) {
                 const itemIndex = orderItems.findIndex(item => item.id === itemId);
@@ -848,11 +869,13 @@
                 const subtotal = orderItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
                 const option = deliveryOption.value;
                 if (option === 'garanhuns') {
-                    garanhunsSelection.classList.remove('hidden');
+                    addressFields.classList.remove('hidden');
+                    whatsappFieldContainer.classList.remove('hidden');
                     deliveryFee = parseFloat(bairroList.value) || 0;
-                } else {
+                } else { // 'local'
+                    addressFields.classList.add('hidden');
+                    whatsappFieldContainer.classList.add('hidden');
                     deliveryFee = 0;
-                    garanhunsSelection.classList.add('hidden');
                 }
                 const total = subtotal + deliveryFee;
                 subtotalEl.textContent = formatCurrency(subtotal);
@@ -939,7 +962,10 @@
 
                 if (selectedBordaName !== "Sem borda") { itemName += ` / Borda: ${selectedBordaName}`; }
 
-                orderItems.push({ name: itemName, price: itemPrice, quantity: 1, id: Date.now() });
+                const pizzaCategory = menuData.find(cat => cat.items.some(p => p.id === currentPizzaForModal.id));
+                const abbreviation = pizzaCategory ? pizzaCategory.abbreviation : 'PZ';
+
+                orderItems.push({ name: itemName, price: itemPrice, quantity: 1, id: Date.now(), abbreviation: abbreviation });
                 updateCart();
                 showToast('Pizza adicionada!');
                 closePizzaModal();
@@ -1007,19 +1033,32 @@
             function generateWhatsAppMessage() {
                 if (orderItems.length === 0) { alert("Seu carrinho está vazio!"); return; }
                 const clientName = document.getElementById('client-name').value;
-                const clientWhatsapp = document.getElementById('client-whatsapp').value;
-                const address = document.getElementById('address').value;
                 const deliveryType = deliveryOption.options[deliveryOption.selectedIndex].text;
-                if (!clientName) { alert("Por favor, informe seu nome."); return; }
-                if (!clientWhatsapp) { alert("Por favor, informe seu número do WhatsApp."); return; }
-                if (deliveryOption.value !== 'local' && !address) { alert("Por favor, informe o endereço ou ponto de referência."); return; }
-                if (deliveryOption.value === 'garanhuns' && bairroList.value === '0') { alert("Por favor, selecione o bairro para entrega."); return; }
 
-                let message = `PEDIDO FEITO NA LA MUNDO DOS SABORES\n\n------------------------------------\nDADOS DO CLIENTE:\nNome: ${clientName}\nWhatsApp: ${clientWhatsapp}\nForma de Entrega: ${deliveryType}\n`;
-                if (deliveryOption.value !== 'local') { message += `Endereço/Referência: ${address}\n`; }
-                if (deliveryOption.value === 'garanhuns') { message += `Bairro: ${bairroList.options[bairroList.selectedIndex].text.split('-')[0].trim()}\n`; }
+                if (!clientName) { alert("Por favor, informe seu nome."); return; }
+
+                let message = `PEDIDO FEITO NA LA MUNDO DOS SABORES\n\n------------------------------------\nDADOS DO CLIENTE:\nNome: ${clientName}\n`;
+
+                if (deliveryOption.value === 'garanhuns') {
+                    const clientWhatsapp = document.getElementById('client-whatsapp').value;
+                    if (!clientWhatsapp) { alert("Por favor, informe seu número do WhatsApp."); return; }
+
+                    const address = document.getElementById('address').value;
+                    const houseNumberInput = document.getElementById('house-number').value;
+                    const houseNumber = houseNumberInput.trim() === '' ? 'N/S' : houseNumberInput;
+
+                    if (!address) { alert("Por favor, informe o endereço ou ponto de referência."); return; }
+                    if (bairroList.value === '0') { alert("Por favor, selecione o bairro para entrega."); return; }
+
+                    message += `WhatsApp: ${clientWhatsapp}\nForma de Entrega: ${deliveryType}\n`;
+                    message += `Endereço/Referência: ${address}, Nº ${houseNumber}\n`;
+                    message += `Bairro: ${bairroList.options[bairroList.selectedIndex].text.split('-')[0].trim()}\n`;
+                } else {
+                    message += `Forma de Entrega: ${deliveryType}\n`;
+                }
+
                 message += `------------------------------------\n\nRESUMO DO PEDIDO:\n`;
-                orderItems.forEach(item => { message += `${item.quantity}x ${item.name} - ${formatCurrency(item.price * item.quantity)}\n`; });
+                orderItems.forEach(item => { message += `${item.quantity}x [${item.abbreviation}] ${item.name} - ${formatCurrency(item.price * item.quantity)}\n`; });
                 message += `\n------------------------------------\nSubtotal: ${subtotalEl.textContent}\nTaxa de Entrega: ${deliveryFeeEl.textContent}\nTOTAL: ${totalPriceEl.textContent}\n------------------------------------\n\nAgradecemos a preferência!`;
                 return encodeURIComponent(message);
             }
@@ -1061,7 +1100,7 @@
                 if (isPizza) {
                     openPizzaModal(itemId);
                 } else {
-                    addSimpleItemToOrder(item);
+                    addSimpleItemToOrder(item, category.abbreviation);
                 }
             });
 
@@ -1161,6 +1200,9 @@
 
             // Inicia o ciclo de notificações de marketing
             startFakeNotifications();
+
+            // Chama a função uma vez no início para configurar o estado inicial
+            calculateTotal();
         });
     </script>
 </body>
